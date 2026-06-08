@@ -29,7 +29,7 @@ const NavBar = () => {
 
   return (
     <AppBar position="sticky" elevation={0}>
-      <Toolbar sx={{ maxWidth: 1100, width: '100%', mx: 'auto', px: { xs: 2, md: 4 } }}>
+      <Toolbar sx={{ maxWidth: 1280, width: '100%', mx: 'auto', px: { xs: 3, md: 6 }, minHeight: { xs: 64, md: 80 } }}>
         <Typography
           variant="h6"
           component={Link}
