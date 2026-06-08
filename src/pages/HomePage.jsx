@@ -5,7 +5,7 @@ import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Divider from '@mui/material/Divider'
 import { Link } from 'react-router-dom'
-import appleImg from '../assets/사과.jpg'
+import appleImg from '../assets/apple.jpg'
 
 const Section = ({ id, bg, children }) => (
   <Box
