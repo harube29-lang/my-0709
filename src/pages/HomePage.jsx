@@ -82,7 +82,7 @@ const HomePage = () => {
               wordBreak: 'keep-all',
             }}
           >
-            여기는 Hero 섹션입니다.
+            Hello, I'm a Developer.
           </Typography>
           <Divider sx={{ width: 60, borderColor: 'primary.main', borderWidth: 3, mx: 'auto', mb: 4 }} />
           <Box
