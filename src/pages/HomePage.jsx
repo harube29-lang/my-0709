@@ -5,6 +5,7 @@ import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Divider from '@mui/material/Divider'
 import { Link } from 'react-router-dom'
+import appleImg from '../assets/사과.jpg'
 
 const Section = ({ id, bg, children }) => (
   <Box
@@ -84,6 +85,19 @@ const HomePage = () => {
             여기는 Hero 섹션입니다.
           </Typography>
           <Divider sx={{ width: 60, borderColor: 'primary.main', borderWidth: 3, mx: 'auto', mb: 4 }} />
+          <Box
+            component="img"
+            src={appleImg}
+            alt="사과"
+            sx={{
+              width: { xs: 180, sm: 240, md: 320 },
+              height: { xs: 180, sm: 240, md: 320 },
+              objectFit: 'cover',
+              borderRadius: '50%',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+              mb: 4,
+            }}
+          />
           <Typography
             variant="body1"
             color="text.secondary"
