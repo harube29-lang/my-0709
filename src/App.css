@@ -1,0 +1,6 @@
+/* 전역 레이아웃 보조 */
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}

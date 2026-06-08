@@ -1,0 +1,24 @@
+:root {
+  /* ── 이미지에서 추출한 컬러 팔레트 (Cornerstone Interactive) ── */
+  --color-primary:    #E85C1E;  /* 오렌지 포인트 */
+  --color-dark:       #1C1C1C;  /* 헤드라인 텍스트 */
+  --color-bg:         #F4F4F2;  /* 페이지 배경 */
+  --color-surface:    #FFFFFF;  /* 카드·내비 배경 */
+  --color-text:       #555555;  /* 본문 텍스트 */
+  --color-muted:      #999999;  /* 보조 텍스트 */
+  --color-border:     #DDDDDD;  /* 테두리 */
+  --color-overlay:    #EBEBEB;  /* 구분 배경 */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-dark);
+  font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
