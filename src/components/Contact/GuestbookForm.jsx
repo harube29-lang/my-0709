@@ -71,7 +71,7 @@ const GuestbookForm = ({ onSuccess }) => {
 
           {/* 이모지 선택 */}
           <Box>
-            <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 600, letterSpacing: 0.5, display: 'block', mb: 1 }}>
+            <Typography variant="caption" sx={{ color: '#64748B', fontWeight: 400, letterSpacing: 0.5, display: 'block', mb: 1 }}>
               이모지 선택
             </Typography>
             <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
@@ -124,7 +124,7 @@ const GuestbookForm = ({ onSuccess }) => {
               py: 1.5,
               background: loading ? '#E2E8F0' : 'linear-gradient(135deg, #FF7A00, #F04438)',
               color: loading ? '#94A3B8' : '#fff',
-              fontWeight: 800,
+              fontWeight: 600,
               fontSize: '0.95rem',
               borderRadius: 2,
               letterSpacing: 0.3,

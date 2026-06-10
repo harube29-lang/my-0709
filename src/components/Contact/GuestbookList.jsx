@@ -24,7 +24,7 @@ const EntryCard = ({ entry, index }) => {
         bgcolor: ac.bg,
         borderLeft: `3px solid ${ac.border}`,
         borderRadius: '0 10px 10px 0',
-        p: { xs: 2.5, md: 3 },
+        p: { xs: 3, md: 4 },
         border: '1px solid #E5E7EB',
         borderLeft: `3px solid ${ac.border}`,
         transition: 'box-shadow 0.2s ease',
@@ -49,16 +49,16 @@ const EntryCard = ({ entry, index }) => {
           {entry.emoji || '😊'}
         </Box>
         <Box sx={{ flex: 1, minWidth: 0 }}>
-          <Typography sx={{ fontWeight: 600, color: '#111827', fontSize: '0.9rem', lineHeight: 1.3 }}>
+          <Typography sx={{ fontWeight: 500, color: '#1F2937', fontSize: '0.9rem', lineHeight: 1.3 }}>
             {entry.author_name}
           </Typography>
           {entry.affiliation && (
-            <Typography variant="caption" sx={{ color: ac.border, fontWeight: 500, display: 'block', mt: 0.2 }}>
+            <Typography variant="caption" sx={{ color: ac.border, fontWeight: 400, display: 'block', mt: 0.2 }}>
               {entry.affiliation}
             </Typography>
           )}
         </Box>
-        <Typography variant="caption" sx={{ color: '#9CA3AF', flexShrink: 0, fontSize: '0.72rem' }}>
+        <Typography variant="caption" sx={{ color: '#9CA3AF', flexShrink: 0, fontSize: '0.72rem', fontWeight: 300 }}>
           {formatDate(entry.created_at)}
         </Typography>
       </Box>
@@ -66,7 +66,7 @@ const EntryCard = ({ entry, index }) => {
       {/* 메시지 */}
       <Typography
         variant="body2"
-        sx={{ color: '#374151', lineHeight: 1.8, wordBreak: 'keep-all', whiteSpace: 'pre-wrap', fontWeight: 400 }}
+        sx={{ color: '#1F2937', lineHeight: 1.75, wordBreak: 'keep-all', whiteSpace: 'pre-wrap', fontWeight: 400 }}
       >
         {entry.message}
       </Typography>
@@ -107,14 +107,14 @@ const GuestbookList = ({ refresh }) => {
   if (entries.length === 0) return (
     <Box sx={{ textAlign: 'center', py: 8 }}>
       <Typography sx={{ fontSize: '2.5rem', mb: 1.5 }}>✉️</Typography>
-      <Typography variant="body2" sx={{ color: '#6B7280', fontWeight: 500 }}>아직 방명록이 없어요.</Typography>
+      <Typography variant="body2" sx={{ color: '#6B7280', fontWeight: 400 }}>아직 방명록이 없어요.</Typography>
       <Typography variant="caption" sx={{ color: '#9CA3AF', mt: 0.5, display: 'block' }}>첫 번째 방명록을 남겨주세요!</Typography>
     </Box>
   )
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-      <Typography variant="caption" sx={{ color: '#9CA3AF', fontWeight: 500 }}>
+      <Typography variant="caption" sx={{ color: '#9CA3AF', fontWeight: 400 }}>
         총 {entries.length}개
       </Typography>
       {entries.map((entry, i) => <EntryCard key={entry.id} entry={entry} index={i} />)}
