@@ -14,62 +14,34 @@ const ContactSection = () => {
       id="contact"
       component="section"
       sx={{
-        bgcolor: '#F8FAFC',
+        bgcolor: '#F9FAFB',
         py: { xs: 10, sm: 14, md: 18 },
         px: { xs: 3, sm: 5, md: 8 },
       }}
     >
-      <Box sx={{ maxWidth: 1100, mx: 'auto' }}>
+      <Box sx={{ maxWidth: 1200, mx: 'auto' }}>
 
-        {/* 섹션 헤더 */}
+        {/* 헤더 */}
         <Box sx={{ mb: { xs: 6, md: 8 } }}>
           <Typography
             variant="caption"
-            sx={{
-              color: '#FF7A00',
-              fontWeight: 700,
-              letterSpacing: 3,
-              textTransform: 'uppercase',
-              fontSize: '0.75rem',
-              display: 'block',
-              mb: 1.5,
-            }}
+            sx={{ color: 'primary.main', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', fontSize: '0.72rem', display: 'block', mb: 1.5 }}
           >
             Contact
           </Typography>
           <Typography
             variant="h2"
-            sx={{
-              fontWeight: 800,
-              color: '#0F172A',
-              fontSize: { xs: '1.75rem', sm: '2.25rem', md: '2.6rem' },
-              lineHeight: 1.2,
-              mb: 2,
-              wordBreak: 'keep-all',
-            }}
+            sx={{ fontWeight: 700, color: '#111827', fontSize: { xs: '1.75rem', sm: '2.25rem', md: '2.5rem' }, lineHeight: 1.2, mb: 2, wordBreak: 'keep-all' }}
           >
             함께 이야기해요 👋
           </Typography>
-          {/* 4색 언더라인 */}
-          <Box sx={{ display: 'flex', width: 72, height: 4, borderRadius: 2, overflow: 'hidden' }}>
-            <Box sx={{ flex: 1, bgcolor: '#FF7A00' }} />
-            <Box sx={{ flex: 1, bgcolor: '#F04438' }} />
-            <Box sx={{ flex: 1, bgcolor: '#E66E00' }} />
-            <Box sx={{ flex: 1, bgcolor: '#D92D20' }} />
-          </Box>
+          <Box sx={{ width: 40, height: 3, background: 'linear-gradient(90deg, #FF7A00, #F04438)', borderRadius: 1 }} />
         </Box>
 
-        {/* 연락처 정보 */}
+        {/* 연락처 */}
         <Paper
           elevation={0}
-          sx={{
-            p: { xs: 3, md: 4 },
-            borderRadius: 3,
-            border: '1px solid #F1F5F9',
-            bgcolor: '#fff',
-            mb: { xs: 5, md: 6 },
-            boxShadow: '0 2px 16px rgba(0,0,0,0.06)',
-          }}
+          sx={{ p: { xs: 3, md: 4 }, borderRadius: 3, border: '1px solid #E5E7EB', bgcolor: '#fff', mb: { xs: 5, md: 6 } }}
         >
           <ContactInfo />
         </Paper>
@@ -78,7 +50,7 @@ const ContactSection = () => {
         <Box
           sx={{
             display: 'grid',
-            gridTemplateColumns: { xs: '1fr', md: '400px 1fr' },
+            gridTemplateColumns: { xs: '1fr', md: '380px 1fr' },
             gap: { xs: 4, md: 5 },
             alignItems: 'start',
           }}
@@ -91,13 +63,10 @@ const ContactSection = () => {
           {/* 목록 */}
           <Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
-              <Typography
-                variant="h3"
-                sx={{ fontWeight: 700, color: '#0F172A', fontSize: { xs: '1.05rem', md: '1.15rem' }, whiteSpace: 'nowrap' }}
-              >
-                방명록 💬
+              <Typography variant="h3" sx={{ fontWeight: 600, color: '#111827', fontSize: { xs: '1rem', md: '1.1rem' }, whiteSpace: 'nowrap' }}>
+                방명록
               </Typography>
-              <Box sx={{ flex: 1, height: 2, background: 'linear-gradient(90deg, #FF7A0030, transparent)', borderRadius: 1 }} />
+              <Box sx={{ flex: 1, height: 1, bgcolor: '#E5E7EB', borderRadius: 1 }} />
             </Box>
             <GuestbookList refresh={refresh} />
           </Box>
