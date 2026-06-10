@@ -54,10 +54,10 @@ const LoginPage = () => {
           <LocalCafeIcon sx={{ color: '#fff', fontSize: 48 }} />
         </Box>
         <Typography variant="h5" sx={{ fontWeight: 700, color: '#6D4C41', letterSpacing: '-0.5px' }}>
-          느좋카페
+          Cafe Notes
         </Typography>
         <Typography variant="body2" sx={{ color: '#BCAAA4', mt: 0.5 }}>
-          좋은 카페, 함께 나눠요 ☕
+          카페 리뷰를 기록하고 공유해요 ☕
         </Typography>
       </Box>
 

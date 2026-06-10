@@ -12,7 +12,7 @@ const TopBar = () => {
             variant="h6"
             sx={{ fontWeight: 700, color: '#6D4C41', fontSize: '1.1rem', letterSpacing: '-0.5px' }}
           >
-            느좋카페
+            Cafe Notes
           </Typography>
         </Box>
         <IconButton size="small">

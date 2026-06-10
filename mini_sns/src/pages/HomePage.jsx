@@ -1,18 +1,38 @@
 import { useState, useEffect } from 'react'
-import { Box, Typography, CircularProgress } from '@mui/material'
+import {
+  Box, Typography, CircularProgress, Grid, Avatar,
+  Modal, Backdrop, Fade, IconButton
+} from '@mui/material'
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
+import FavoriteIcon from '@mui/icons-material/Favorite'
+import ChatBubbleOutlinedIcon from '@mui/icons-material/ChatBubbleOutlined'
+import CloseIcon from '@mui/icons-material/Close'
+import LocationOnIcon from '@mui/icons-material/LocationOn'
 import Layout from '../components/Layout'
-import PostCard from '../components/PostCard'
+import CommentModal from '../components/CommentModal'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../hooks/useAuth'
+import { formatDistanceToNow } from '../utils/dateUtils'
 
 const HomePage = () => {
   const { user } = useAuth()
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
+  const [selectedPost, setSelectedPost] = useState(null)
+  const [commentOpen, setCommentOpen] = useState(false)
+  const [liked, setLiked] = useState(false)
+  const [likesCount, setLikesCount] = useState(0)
 
   useEffect(() => {
     fetchPosts()
   }, [user])
+
+  useEffect(() => {
+    if (selectedPost) {
+      setLiked(selectedPost.user_liked || false)
+      setLikesCount(selectedPost.likes_count || 0)
+    }
+  }, [selectedPost])
 
   const fetchPosts = async () => {
     setLoading(true)
@@ -30,13 +50,6 @@ const HomePage = () => {
           .select('*', { count: 'exact', head: true })
           .eq('post_id', post.id)
 
-        const { data: recentComments } = await supabase
-          .from('sns_comments')
-          .select('*, sns_profiles(nickname)')
-          .eq('post_id', post.id)
-          .order('created_at', { ascending: false })
-          .limit(2)
-
         let userLiked = false
         if (user) {
           const { data: likeData } = await supabase
@@ -47,14 +60,28 @@ const HomePage = () => {
             .maybeSingle()
           userLiked = !!likeData
         }
-
-        return { ...post, comments_count: count || 0, recent_comments: recentComments || [], user_liked: userLiked }
+        return { ...post, comments_count: count || 0, user_liked: userLiked }
       })
     )
 
     setPosts(enriched)
     setLoading(false)
   }
+
+  const handleLike = async () => {
+    if (!user || !selectedPost) return
+    if (liked) {
+      await supabase.from('sns_likes').delete().eq('post_id', selectedPost.id).eq('user_id', user.id)
+      setLiked(false)
+      setLikesCount((c) => c - 1)
+    } else {
+      await supabase.from('sns_likes').insert({ post_id: selectedPost.id, user_id: user.id })
+      setLiked(true)
+      setLikesCount((c) => c + 1)
+    }
+  }
+
+  const profile = selectedPost?.sns_profiles
 
   return (
     <Layout>
@@ -69,11 +96,132 @@ const HomePage = () => {
           <Typography variant="body2" sx={{ color: '#BCAAA4', mt: 0.5 }}>첫 번째 카페 리뷰를 올려보세요!</Typography>
         </Box>
       ) : (
-        <Box>
+        <Grid container spacing={0.3} sx={{ pt: 0.3 }}>
           {posts.map((post) => (
-            <PostCard key={post.id} post={post} onLikeUpdate={fetchPosts} />
+            <Grid item xs={4} key={post.id}>
+              <Box
+                onClick={() => setSelectedPost(post)}
+                sx={{ position: 'relative', cursor: 'pointer', '&:hover .overlay': { opacity: 1 } }}
+              >
+                <Box
+                  component="img"
+                  src={post.image_url}
+                  alt="post"
+                  sx={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', display: 'block' }}
+                  onError={(e) => { e.target.src = `https://picsum.photos/seed/${post.id}/200/200` }}
+                />
+                {/* 호버 오버레이 */}
+                <Box
+                  className="overlay"
+                  sx={{
+                    position: 'absolute', inset: 0,
+                    bgcolor: 'rgba(0,0,0,0.3)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1.5,
+                    opacity: 0, transition: 'opacity 0.2s',
+                  }}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.4 }}>
+                    <FavoriteIcon sx={{ color: '#fff', fontSize: 16 }} />
+                    <Typography variant="caption" sx={{ color: '#fff', fontWeight: 700 }}>{post.likes_count}</Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.4 }}>
+                    <ChatBubbleOutlinedIcon sx={{ color: '#fff', fontSize: 16 }} />
+                    <Typography variant="caption" sx={{ color: '#fff', fontWeight: 700 }}>{post.comments_count}</Typography>
+                  </Box>
+                </Box>
+              </Box>
+            </Grid>
           ))}
-        </Box>
+        </Grid>
+      )}
+
+      {/* 게시물 상세 모달 */}
+      <Modal
+        open={!!selectedPost}
+        onClose={() => { setSelectedPost(null); setCommentOpen(false) }}
+        closeAfterTransition
+        slots={{ backdrop: Backdrop }}
+        slotProps={{ backdrop: { sx: { backdropFilter: 'blur(3px)', bgcolor: 'rgba(0,0,0,0.6)' } } }}
+      >
+        <Fade in={!!selectedPost}>
+          <Box sx={{
+            position: 'fixed',
+            top: '52px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '100%',
+            maxWidth: 480,
+            height: 'calc(100vh - 112px)',
+            bgcolor: '#fff',
+            overflowY: 'auto',
+            outline: 'none',
+            borderRadius: '0 0 12px 12px',
+          }}>
+            {selectedPost && (
+              <>
+                {/* 모달 헤더 */}
+                <Box sx={{ display: 'flex', alignItems: 'center', px: 2, py: 1.2, borderBottom: '1px solid #EFD9D4', position: 'sticky', top: 0, bgcolor: '#fff', zIndex: 1 }}>
+                  <Avatar src={profile?.profile_image_url} sx={{ width: 32, height: 32, mr: 1.2, border: '2px solid #EFD9D4' }} />
+                  <Box sx={{ flex: 1 }}>
+                    <Typography variant="body2" sx={{ fontWeight: 700, color: '#3E2723', lineHeight: 1.2 }}>
+                      {profile?.nickname}
+                    </Typography>
+                    {selectedPost.location && (
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.3 }}>
+                        <LocationOnIcon sx={{ fontSize: 11, color: '#BCAAA4' }} />
+                        <Typography variant="caption" sx={{ color: '#BCAAA4', fontSize: '0.68rem' }}>{selectedPost.location}</Typography>
+                      </Box>
+                    )}
+                  </Box>
+                  <Typography variant="caption" sx={{ color: '#BCAAA4', mr: 1 }}>{formatDistanceToNow(selectedPost.created_at)}</Typography>
+                  <IconButton size="small" onClick={() => { setSelectedPost(null); setCommentOpen(false) }} sx={{ color: '#9C786C' }}>
+                    <CloseIcon fontSize="small" />
+                  </IconButton>
+                </Box>
+
+                {/* 이미지 */}
+                <Box
+                  component="img"
+                  src={selectedPost.image_url}
+                  alt="post"
+                  sx={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', display: 'block' }}
+                  onError={(e) => { e.target.src = `https://picsum.photos/seed/${selectedPost.id}/400/400` }}
+                />
+
+                {/* 좋아요·댓글 */}
+                <Box sx={{ px: 1.5, pt: 0.5 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <IconButton size="small" onClick={handleLike} sx={{ color: liked ? '#e53935' : '#795548' }}>
+                      {liked ? <FavoriteIcon fontSize="small" /> : <FavoriteBorderIcon fontSize="small" />}
+                    </IconButton>
+                    <Typography variant="caption" sx={{ color: '#795548', fontWeight: 600, mr: 1.5 }}>{likesCount}</Typography>
+                    <IconButton size="small" onClick={() => setCommentOpen(true)} sx={{ color: '#795548' }}>
+                      <ChatBubbleOutlinedIcon fontSize="small" />
+                    </IconButton>
+                    <Typography variant="caption" sx={{ color: '#795548', fontWeight: 600 }}>{selectedPost.comments_count}</Typography>
+                  </Box>
+
+                  {selectedPost.caption && (
+                    <Box sx={{ px: 0.5, pb: 1 }}>
+                      <Typography variant="body2" sx={{ color: '#3E2723' }}>
+                        <strong>{profile?.nickname}</strong> {selectedPost.caption}
+                      </Typography>
+                    </Box>
+                  )}
+                  {selectedPost.hashtags && (
+                    <Box sx={{ px: 0.5, pb: 1.5 }}>
+                      <Typography variant="caption" sx={{ color: '#6D4C41', fontWeight: 500 }}>{selectedPost.hashtags}</Typography>
+                    </Box>
+                  )}
+                </Box>
+              </>
+            )}
+          </Box>
+        </Fade>
+      </Modal>
+
+      {selectedPost && (
+        <CommentModal open={commentOpen} onClose={() => setCommentOpen(false)} postId={selectedPost.id} />
       )}
     </Layout>
   )

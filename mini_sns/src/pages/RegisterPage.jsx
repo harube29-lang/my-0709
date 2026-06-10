@@ -49,7 +49,7 @@ const RegisterPage = () => {
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 4 }}>
         <LocalCafeIcon sx={{ color: '#6D4C41', fontSize: 40, mb: 1 }} />
         <Typography variant="h5" sx={{ fontWeight: 700, color: '#6D4C41' }}>회원가입</Typography>
-        <Typography variant="body2" sx={{ color: '#BCAAA4', mt: 0.5 }}>느좋카페와 함께해요 ☕</Typography>
+        <Typography variant="body2" sx={{ color: '#BCAAA4', mt: 0.5 }}>Cafe Notes와 함께해요 ☕</Typography>
       </Box>
 
       <Box component="form" onSubmit={handleSubmit} sx={{ width: '100%' }}>
