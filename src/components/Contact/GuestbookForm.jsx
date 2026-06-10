@@ -49,7 +49,7 @@ const GuestbookForm = ({ onSuccess }) => {
 
       {/* 헤더 */}
       <Box sx={{ background: 'linear-gradient(135deg, #FF7A00, #F04438)', px: 3, py: 2.5 }}>
-        <Typography sx={{ color: '#fff', fontWeight: 800, fontSize: '1.1rem', mb: 0.3 }}>
+        <Typography sx={{ color: '#fff', fontWeight: 600, fontSize: '1.05rem', mb: 0.3 }}>
           방명록 남기기 ✍️
         </Typography>
         <Typography sx={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.82rem' }}>
