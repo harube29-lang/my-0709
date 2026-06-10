@@ -6,6 +6,7 @@ import CardContent from '@mui/material/CardContent'
 import Divider from '@mui/material/Divider'
 import { Link } from 'react-router-dom'
 import appleImg from '../assets/apple.jpg'
+import ContactSection from '../components/Contact/ContactSection'
 
 const Section = ({ id, bg, children }) => (
   <Box
@@ -262,43 +263,7 @@ const HomePage = () => {
       </Section>
 
       {/* ── 5. Contact ── */}
-      <Section id="contact" bg="#1C1C1C">
-        <Box sx={{ textAlign: 'center' }}>
-          <SectionTag>Contact</SectionTag>
-          <Typography
-            variant="h2"
-            sx={{
-              color: '#FFFFFF',
-              mb: 2,
-              fontSize: { xs: '1.6rem', sm: '2rem', md: '2.2rem' },
-              wordBreak: 'keep-all',
-            }}
-          >
-            여기는 Contact 섹션입니다.
-          </Typography>
-          <Divider sx={{ width: 40, borderColor: 'primary.main', borderWidth: 2, mx: 'auto', mb: 4 }} />
-          <Typography
-            variant="body1"
-            sx={{ color: '#999999', mb: 5, fontSize: { xs: '0.95rem', md: '1.05rem' }, wordBreak: 'keep-all' }}
-          >
-            연락처, SNS, 간단한 메시지 폼이 들어갈 예정입니다.
-          </Typography>
-          <Card
-            sx={{
-              maxWidth: { xs: '100%', sm: 520 },
-              mx: 'auto',
-              minHeight: { xs: 140, md: 200 },
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <CardContent sx={{ textAlign: 'center', p: { xs: 3, md: 5 } }}>
-              <Typography variant="body2" color="text.disabled">메시지 폼 / 연락처 영역</Typography>
-            </CardContent>
-          </Card>
-        </Box>
-      </Section>
+      <ContactSection />
     </Box>
   )
 }
