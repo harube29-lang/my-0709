@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import {
   Drawer, Box, Typography, Avatar, TextField, IconButton,
-  List, ListItem, ListItemAvatar, ListItemText, Divider, CircularProgress
+  List, ListItem, ListItemAvatar, ListItemText, CircularProgress
 } from '@mui/material'
 import SendIcon from '@mui/icons-material/Send'
 import CloseIcon from '@mui/icons-material/Close'
@@ -23,8 +23,8 @@ const CommentModal = ({ open, onClose, postId }) => {
   const fetchComments = async () => {
     setLoading(true)
     const { data } = await supabase
-      .from('comments')
-      .select('*, profiles(nickname, profile_image_url)')
+      .from('sns_comments')
+      .select('*, sns_profiles(nickname, profile_image_url)')
       .eq('post_id', postId)
       .order('created_at', { ascending: true })
     setComments(data || [])
@@ -35,7 +35,7 @@ const CommentModal = ({ open, onClose, postId }) => {
     e.preventDefault()
     if (!newComment.trim() || !user) return
     setSubmitting(true)
-    await supabase.from('comments').insert({ post_id: postId, user_id: user.id, content: newComment.trim() })
+    await supabase.from('sns_comments').insert({ post_id: postId, user_id: user.id, content: newComment.trim() })
     setNewComment('')
     await fetchComments()
     setSubmitting(false)
@@ -59,14 +59,12 @@ const CommentModal = ({ open, onClose, postId }) => {
       }}
       sx={{ '& .MuiBackdrop-root': { backdropFilter: 'blur(2px)', bgcolor: 'rgba(0,0,0,0.5)' } }}
     >
-      {/* 헤더 */}
       <Box sx={{ px: 2, py: 1.5, display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #EFD9D4' }}>
         <Box sx={{ width: 40, height: 4, bgcolor: '#BCAAA4', borderRadius: 2, mx: 'auto', position: 'absolute', left: '50%', transform: 'translateX(-50%)', top: 8 }} />
         <Typography variant="subtitle1" sx={{ fontWeight: 600, color: '#3E2723' }}>댓글</Typography>
         <IconButton size="small" onClick={onClose}><CloseIcon fontSize="small" /></IconButton>
       </Box>
 
-      {/* 댓글 목록 */}
       <Box sx={{ flex: 1, overflow: 'auto', px: 1 }}>
         {loading ? (
           <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}><CircularProgress size={24} sx={{ color: '#6D4C41' }} /></Box>
@@ -79,13 +77,13 @@ const CommentModal = ({ open, onClose, postId }) => {
             {comments.map((comment) => (
               <ListItem key={comment.id} alignItems="flex-start" sx={{ py: 1 }}>
                 <ListItemAvatar sx={{ minWidth: 40 }}>
-                  <Avatar src={comment.profiles?.profile_image_url} sx={{ width: 32, height: 32 }} />
+                  <Avatar src={comment.sns_profiles?.profile_image_url} sx={{ width: 32, height: 32 }} />
                 </ListItemAvatar>
                 <ListItemText
                   primary={
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                       <Typography variant="body2" sx={{ fontWeight: 600, color: '#3E2723' }}>
-                        {comment.profiles?.nickname}
+                        {comment.sns_profiles?.nickname}
                       </Typography>
                       <Typography variant="caption" color="text.secondary">
                         {formatDistanceToNow(comment.created_at)}
@@ -102,7 +100,6 @@ const CommentModal = ({ open, onClose, postId }) => {
         )}
       </Box>
 
-      {/* 댓글 입력 */}
       <Box
         component="form"
         onSubmit={handleSubmit}

@@ -17,26 +17,22 @@ const HomePage = () => {
   const fetchPosts = async () => {
     setLoading(true)
     const { data: postsData } = await supabase
-      .from('posts')
-      .select(`
-        *,
-        profiles(nickname, profile_image_url)
-      `)
+      .from('sns_posts')
+      .select('*, sns_profiles(nickname, profile_image_url)')
       .order('created_at', { ascending: false })
 
     if (!postsData) { setLoading(false); return }
 
-    // 댓글 수 및 최근 댓글 2개 가져오기
     const enriched = await Promise.all(
       postsData.map(async (post) => {
         const { count } = await supabase
-          .from('comments')
+          .from('sns_comments')
           .select('*', { count: 'exact', head: true })
           .eq('post_id', post.id)
 
         const { data: recentComments } = await supabase
-          .from('comments')
-          .select('*, profiles(nickname)')
+          .from('sns_comments')
+          .select('*, sns_profiles(nickname)')
           .eq('post_id', post.id)
           .order('created_at', { ascending: false })
           .limit(2)
@@ -44,7 +40,7 @@ const HomePage = () => {
         let userLiked = false
         if (user) {
           const { data: likeData } = await supabase
-            .from('likes')
+            .from('sns_likes')
             .select('id')
             .eq('post_id', post.id)
             .eq('user_id', user.id)

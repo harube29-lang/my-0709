@@ -1,7 +1,5 @@
 import { useState } from 'react'
-import {
-  Box, Avatar, Typography, IconButton, Chip
-} from '@mui/material'
+import { Box, Avatar, Typography, IconButton } from '@mui/material'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import ChatBubbleOutlinedIcon from '@mui/icons-material/ChatBubbleOutlined'
@@ -20,11 +18,11 @@ const PostCard = ({ post, onLikeUpdate }) => {
   const handleLike = async () => {
     if (!user) return
     if (liked) {
-      await supabase.from('likes').delete().eq('post_id', post.id).eq('user_id', user.id)
+      await supabase.from('sns_likes').delete().eq('post_id', post.id).eq('user_id', user.id)
       setLiked(false)
       setLikesCount((c) => c - 1)
     } else {
-      await supabase.from('likes').insert({ post_id: post.id, user_id: user.id })
+      await supabase.from('sns_likes').insert({ post_id: post.id, user_id: user.id })
       setLiked(true)
       setLikesCount((c) => c + 1)
     }
@@ -32,19 +30,17 @@ const PostCard = ({ post, onLikeUpdate }) => {
   }
 
   const hashtags = post.hashtags ? post.hashtags.split(' ').filter(Boolean) : []
+  const profile = post.sns_profiles
 
   return (
     <>
       <Box sx={{ bgcolor: '#fff', mb: 1, borderBottom: '1px solid #F5EBE8' }}>
         {/* 상단: 프로필 + 위치 */}
         <Box sx={{ display: 'flex', alignItems: 'center', px: 2, py: 1.5, gap: 1.2 }}>
-          <Avatar
-            src={post.profiles?.profile_image_url}
-            sx={{ width: 38, height: 38, border: '2px solid #EFD9D4' }}
-          />
+          <Avatar src={profile?.profile_image_url} sx={{ width: 38, height: 38, border: '2px solid #EFD9D4' }} />
           <Box sx={{ flex: 1 }}>
             <Typography variant="body2" sx={{ fontWeight: 600, color: '#3E2723', lineHeight: 1.3 }}>
-              {post.profiles?.nickname}
+              {profile?.nickname}
             </Typography>
             {post.location && (
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.3 }}>
@@ -67,33 +63,27 @@ const PostCard = ({ post, onLikeUpdate }) => {
           onError={(e) => { e.target.src = `https://picsum.photos/seed/${post.id}/400/400` }}
         />
 
-        {/* 하단: 좋아요/댓글 */}
+        {/* 좋아요/댓글 */}
         <Box sx={{ px: 1 }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <IconButton size="small" onClick={handleLike} sx={{ color: liked ? '#e53935' : '#795548' }}>
               {liked ? <FavoriteIcon fontSize="small" /> : <FavoriteBorderIcon fontSize="small" />}
             </IconButton>
-            <Typography variant="caption" sx={{ color: '#795548', mr: 1.5, fontWeight: 600 }}>
-              {likesCount}
-            </Typography>
+            <Typography variant="caption" sx={{ color: '#795548', mr: 1.5, fontWeight: 600 }}>{likesCount}</Typography>
             <IconButton size="small" onClick={() => setCommentOpen(true)} sx={{ color: '#795548' }}>
               <ChatBubbleOutlinedIcon fontSize="small" />
             </IconButton>
-            <Typography variant="caption" sx={{ color: '#795548', fontWeight: 600 }}>
-              {post.comments_count || 0}
-            </Typography>
+            <Typography variant="caption" sx={{ color: '#795548', fontWeight: 600 }}>{post.comments_count || 0}</Typography>
           </Box>
 
-          {/* 캡션 */}
           {post.caption && (
             <Box sx={{ px: 1, pb: 1 }}>
               <Typography variant="body2" sx={{ color: '#3E2723' }}>
-                <strong>{post.profiles?.nickname}</strong> {post.caption}
+                <strong>{profile?.nickname}</strong> {post.caption}
               </Typography>
             </Box>
           )}
 
-          {/* 해시태그 */}
           {hashtags.length > 0 && (
             <Box sx={{ px: 1, pb: 1, display: 'flex', gap: 0.5, flexWrap: 'wrap' }}>
               {hashtags.map((tag, i) => (
@@ -104,22 +94,17 @@ const PostCard = ({ post, onLikeUpdate }) => {
             </Box>
           )}
 
-          {/* 최근 댓글 2개 */}
           {post.recent_comments?.slice(0, 2).map((c) => (
             <Box key={c.id} sx={{ px: 1, pb: 0.5 }}>
               <Typography variant="caption" sx={{ color: '#3E2723' }}>
-                <strong>{c.profiles?.nickname}</strong> {c.content}
+                <strong>{c.sns_profiles?.nickname}</strong> {c.content}
               </Typography>
             </Box>
           ))}
 
           {(post.comments_count || 0) > 2 && (
             <Box sx={{ px: 1, pb: 1 }}>
-              <Typography
-                variant="caption"
-                sx={{ color: '#BCAAA4', cursor: 'pointer' }}
-                onClick={() => setCommentOpen(true)}
-              >
+              <Typography variant="caption" sx={{ color: '#BCAAA4', cursor: 'pointer' }} onClick={() => setCommentOpen(true)}>
                 댓글 {post.comments_count}개 모두 보기
               </Typography>
             </Box>

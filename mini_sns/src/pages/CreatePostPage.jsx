@@ -46,7 +46,7 @@ const CreatePostPage = () => {
     if (!imageUrl) { setError('이미지를 선택해주세요.'); return }
     setSubmitting(true)
     setError('')
-    const { error } = await supabase.from('posts').insert({
+    const { error } = await supabase.from('sns_posts').insert({
       user_id: user.id,
       caption: form.caption,
       hashtags: form.hashtags,

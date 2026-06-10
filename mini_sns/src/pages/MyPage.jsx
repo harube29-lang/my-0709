@@ -31,8 +31,8 @@ const MyPage = () => {
   const fetchMyPosts = async () => {
     setLoading(true)
     const { data } = await supabase
-      .from('posts')
-      .select('*, profiles(nickname, profile_image_url)')
+      .from('sns_posts')
+      .select('*, sns_profiles(nickname, profile_image_url)')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
     setPosts(data || [])
@@ -164,9 +164,9 @@ const MyPage = () => {
                   <IconButton size="small" onClick={() => setSelectedPost(null)} sx={{ color: '#6D4C41', mr: 1 }}>
                     <CloseIcon />
                   </IconButton>
-                  <Avatar src={selectedPost.profiles?.profile_image_url} sx={{ width: 32, height: 32, mr: 1 }} />
+                  <Avatar src={selectedPost.sns_profiles?.profile_image_url} sx={{ width: 32, height: 32, mr: 1 }} />
                   <Typography variant="body2" sx={{ fontWeight: 600, color: '#3E2723' }}>
-                    {selectedPost.profiles?.nickname}
+                    {selectedPost.sns_profiles?.nickname}
                   </Typography>
                 </Box>
                 <Box
@@ -186,7 +186,7 @@ const MyPage = () => {
                   </Box>
                   {selectedPost.caption && (
                     <Typography variant="body2" sx={{ color: '#3E2723', mb: 0.5 }}>
-                      <strong>{selectedPost.profiles?.nickname}</strong> {selectedPost.caption}
+                      <strong>{selectedPost.sns_profiles?.nickname}</strong> {selectedPost.caption}
                     </Typography>
                   )}
                   {selectedPost.hashtags && (

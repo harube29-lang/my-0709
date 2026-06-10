@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
   }, [])
 
   const fetchProfile = async (userId) => {
-    const { data } = await supabase.from('profiles').select('*').eq('id', userId).single()
+    const { data } = await supabase.from('sns_profiles').select('*').eq('id', userId).single()
     setProfile(data)
     setLoading(false)
   }
