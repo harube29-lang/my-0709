@@ -1,13 +1,10 @@
 import { useState } from 'react'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import Divider from '@mui/material/Divider'
 import Paper from '@mui/material/Paper'
 import ContactInfo from './ContactInfo'
 import GuestbookForm from './GuestbookForm'
 import GuestbookList from './GuestbookList'
-
-const C = { primary: '#6D28D9', secondary: '#9333EA', accent: '#FFB703', accent2: '#FB7185' }
 
 const ContactSection = () => {
   const [refresh, setRefresh] = useState(0)
@@ -17,24 +14,25 @@ const ContactSection = () => {
       id="contact"
       component="section"
       sx={{
-        background: 'linear-gradient(175deg, #F8FAFC 0%, #F3F0FF 60%, #FDF4FF 100%)',
+        bgcolor: '#F8FAFC',
         py: { xs: 10, sm: 14, md: 18 },
         px: { xs: 3, sm: 5, md: 8 },
       }}
     >
       <Box sx={{ maxWidth: 1100, mx: 'auto' }}>
+
         {/* 섹션 헤더 */}
-        <Box sx={{ textAlign: 'center', mb: { xs: 6, md: 9 } }}>
+        <Box sx={{ mb: { xs: 6, md: 8 } }}>
           <Typography
             variant="caption"
             sx={{
-              display: 'inline-block',
-              color: C.primary,
+              color: '#FF7A00',
               fontWeight: 700,
               letterSpacing: 3,
               textTransform: 'uppercase',
               fontSize: '0.75rem',
-              mb: 2,
+              display: 'block',
+              mb: 1.5,
             }}
           >
             Contact
@@ -42,99 +40,69 @@ const ContactSection = () => {
           <Typography
             variant="h2"
             sx={{
-              fontSize: { xs: '1.75rem', sm: '2.25rem', md: '2.75rem' },
-              fontWeight: 700,
+              fontWeight: 800,
               color: '#0F172A',
-              mb: 2.5,
+              fontSize: { xs: '1.75rem', sm: '2.25rem', md: '2.6rem' },
+              lineHeight: 1.2,
+              mb: 2,
               wordBreak: 'keep-all',
-              lineHeight: 1.25,
             }}
           >
             함께 이야기해요 👋
           </Typography>
-          <Divider
-            sx={{
-              width: 52,
-              mx: 'auto',
-              borderWidth: 3,
-              borderRadius: 2,
-              borderColor: C.accent,
-            }}
-          />
+          {/* 4색 언더라인 */}
+          <Box sx={{ display: 'flex', width: 72, height: 4, borderRadius: 2, overflow: 'hidden' }}>
+            <Box sx={{ flex: 1, bgcolor: '#FF7A00' }} />
+            <Box sx={{ flex: 1, bgcolor: '#F04438' }} />
+            <Box sx={{ flex: 1, bgcolor: '#E66E00' }} />
+            <Box sx={{ flex: 1, bgcolor: '#D92D20' }} />
+          </Box>
         </Box>
 
-        {/* 연락처 정보 카드 */}
+        {/* 연락처 정보 */}
         <Paper
           elevation={0}
           sx={{
-            p: { xs: 3, md: 4.5 },
-            borderRadius: 4,
-            border: `1px solid #E9D5FF`,
-            backgroundColor: '#fff',
-            mb: { xs: 5, md: 7 },
-            boxShadow: `0 4px 24px ${C.primary}0A`,
+            p: { xs: 3, md: 4 },
+            borderRadius: 3,
+            border: '1px solid #F1F5F9',
+            bgcolor: '#fff',
+            mb: { xs: 5, md: 6 },
+            boxShadow: '0 2px 16px rgba(0,0,0,0.06)',
           }}
         >
           <ContactInfo />
         </Paper>
 
-        {/* 방명록 영역 */}
+        {/* 방명록 그리드 */}
         <Box
           sx={{
             display: 'grid',
-            gridTemplateColumns: { xs: '1fr', md: '420px 1fr' },
+            gridTemplateColumns: { xs: '1fr', md: '400px 1fr' },
             gap: { xs: 4, md: 5 },
             alignItems: 'start',
           }}
         >
-          {/* 방명록 폼 */}
-          <Paper
-            elevation={0}
-            sx={{
-              p: { xs: 3, md: 4 },
-              borderRadius: 4,
-              border: `1px solid #E9D5FF`,
-              backgroundColor: '#fff',
-              position: { md: 'sticky' },
-              top: { md: 88 },
-              boxShadow: `0 4px 24px ${C.primary}0A`,
-            }}
-          >
-            <Box sx={{ mb: 3 }}>
-              <Typography
-                variant="h3"
-                sx={{ fontWeight: 700, color: '#0F172A', fontSize: { xs: '1.1rem', md: '1.2rem' }, mb: 0.5 }}
-              >
-                방명록 남기기 ✍️
-              </Typography>
-              <Typography variant="body2" sx={{ color: '#94A3B8' }}>
-                익명으로도 남길 수 있어요!
-              </Typography>
-            </Box>
+          {/* 폼 */}
+          <Box sx={{ position: { md: 'sticky' }, top: { md: 88 } }}>
             <GuestbookForm onSuccess={() => setRefresh(r => r + 1)} />
-          </Paper>
+          </Box>
 
-          {/* 방명록 목록 */}
+          {/* 목록 */}
           <Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 3 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
               <Typography
                 variant="h3"
-                sx={{ fontWeight: 700, color: '#0F172A', fontSize: { xs: '1.1rem', md: '1.2rem' } }}
+                sx={{ fontWeight: 700, color: '#0F172A', fontSize: { xs: '1.05rem', md: '1.15rem' }, whiteSpace: 'nowrap' }}
               >
                 방명록 💬
               </Typography>
-              <Box
-                sx={{
-                  height: 3,
-                  flex: 1,
-                  background: `linear-gradient(90deg, ${C.primary}30, transparent)`,
-                  borderRadius: 2,
-                }}
-              />
+              <Box sx={{ flex: 1, height: 2, background: 'linear-gradient(90deg, #FF7A0030, transparent)', borderRadius: 1 }} />
             </Box>
             <GuestbookList refresh={refresh} />
           </Box>
         </Box>
+
       </Box>
     </Box>
   )

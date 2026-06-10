@@ -1,95 +1,77 @@
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import IconButton from '@mui/material/IconButton'
 import EmailRoundedIcon from '@mui/icons-material/EmailRounded'
 import InstagramIcon from '@mui/icons-material/Instagram'
 
-const C = {
-  primary: '#6D28D9',
-  secondary: '#9333EA',
-}
-
 const ContactInfo = () => (
-  <Box
-    sx={{
-      display: 'flex',
-      flexDirection: { xs: 'column', sm: 'row' },
-      gap: { xs: 3, sm: 5 },
-      alignItems: { xs: 'flex-start', sm: 'center' },
-      justifyContent: 'center',
-      flexWrap: 'wrap',
-    }}
-  >
+  <Box sx={{ display: 'flex', gap: 2.5, flexWrap: 'wrap' }}>
+
     {/* 이메일 */}
-    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-      <Box
-        sx={{
-          width: 48,
-          height: 48,
-          borderRadius: '50%',
-          background: `linear-gradient(135deg, ${C.primary}, ${C.secondary})`,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexShrink: 0,
-          boxShadow: `0 4px 14px ${C.primary}40`,
-        }}
-      >
-        <EmailRoundedIcon sx={{ color: '#fff', fontSize: 22 }} />
+    <Box
+      component="a"
+      href="mailto:harube29@naver.com"
+      sx={{
+        flex: '1 1 220px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: 2,
+        background: 'linear-gradient(135deg, #FF7A00, #F04438)',
+        borderRadius: 3,
+        px: 3,
+        py: 2.5,
+        color: '#fff',
+        textDecoration: 'none',
+        boxShadow: '0 4px 20px #FF7A0040',
+        transition: 'transform 0.2s, box-shadow 0.2s',
+        '&:hover': {
+          transform: 'translateY(-3px)',
+          boxShadow: '0 10px 28px #FF7A0055',
+        },
+      }}
+    >
+      <Box sx={{ width: 44, height: 44, borderRadius: 2, bgcolor: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+        <EmailRoundedIcon sx={{ fontSize: 22 }} />
       </Box>
       <Box>
-        <Typography variant="caption" sx={{ color: '#94A3B8', display: 'block', lineHeight: 1, mb: 0.3 }}>
-          이메일
-        </Typography>
-        <Typography
-          component="a"
-          href="mailto:harube29@naver.com"
-          variant="body1"
-          sx={{
-            color: '#0F172A',
-            fontWeight: 600,
-            textDecoration: 'none',
-            '&:hover': { color: C.primary },
-            transition: 'color 0.2s',
-          }}
-        >
-          harube29@naver.com
-        </Typography>
+        <Typography sx={{ fontSize: '0.7rem', opacity: 0.75, letterSpacing: 1, textTransform: 'uppercase', fontWeight: 600 }}>이메일</Typography>
+        <Typography sx={{ fontWeight: 700, fontSize: '0.95rem' }}>harube29@naver.com</Typography>
       </Box>
     </Box>
 
-    {/* SNS */}
-    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-      <Box>
-        <Typography variant="caption" sx={{ color: '#94A3B8', display: 'block', lineHeight: 1, mb: 0.3 }}>
-          SNS
-        </Typography>
-        <Typography variant="body2" sx={{ color: '#64748B' }}>
-          인스타그램에서 찾아오세요!
-        </Typography>
+    {/* 인스타그램 */}
+    <Box
+      component="a"
+      href="https://www.instagram.com/"
+      target="_blank"
+      rel="noopener noreferrer"
+      sx={{
+        flex: '0 1 auto',
+        display: 'flex',
+        alignItems: 'center',
+        gap: 2,
+        background: 'linear-gradient(135deg, #F58529 0%, #DD2A7B 55%, #8134AF 100%)',
+        borderRadius: 3,
+        px: 3,
+        py: 2.5,
+        color: '#fff',
+        textDecoration: 'none',
+        boxShadow: '0 4px 20px #DD2A7B40',
+        transition: 'transform 0.2s, box-shadow 0.2s',
+        '&:hover': {
+          transform: 'translateY(-3px) rotate(-2deg)',
+          boxShadow: '0 10px 28px #DD2A7B55',
+        },
+      }}
+    >
+      <Box sx={{ width: 44, height: 44, borderRadius: 2, bgcolor: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <InstagramIcon sx={{ fontSize: 22 }} />
       </Box>
-      <IconButton
-        component="a"
-        href="https://www.instagram.com/"
-        target="_blank"
-        rel="noopener noreferrer"
-        sx={{
-          width: 48,
-          height: 48,
-          background: 'linear-gradient(135deg, #F58529 0%, #DD2A7B 50%, #8134AF 100%)',
-          color: '#fff',
-          flexShrink: 0,
-          boxShadow: '0 4px 14px rgba(221,42,123,0.35)',
-          '&:hover': {
-            transform: 'scale(1.12) rotate(-5deg)',
-            boxShadow: '0 6px 20px rgba(221,42,123,0.45)',
-          },
-          transition: 'all 0.25s cubic-bezier(.34,1.56,.64,1)',
-        }}
-      >
-        <InstagramIcon sx={{ fontSize: 24 }} />
-      </IconButton>
+      <Box>
+        <Typography sx={{ fontSize: '0.7rem', opacity: 0.75, letterSpacing: 1, textTransform: 'uppercase', fontWeight: 600 }}>SNS</Typography>
+        <Typography sx={{ fontWeight: 700, fontSize: '0.95rem' }}>Instagram</Typography>
+      </Box>
     </Box>
+
   </Box>
 )
 
