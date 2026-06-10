@@ -33,7 +33,7 @@ const ContactSection = () => {
             variant="h2"
             sx={{ fontWeight: 700, color: '#111827', fontSize: { xs: '1.75rem', sm: '2.25rem', md: '2.5rem' }, lineHeight: 1.2, mb: 2, wordBreak: 'keep-all' }}
           >
-            함께 이야기해요 👋
+            커뮤니티
           </Typography>
           <Box sx={{ width: 40, height: 3, background: 'linear-gradient(90deg, #FF7A00, #F04438)', borderRadius: 1 }} />
         </Box>

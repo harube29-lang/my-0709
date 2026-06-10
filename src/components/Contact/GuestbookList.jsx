@@ -46,7 +46,7 @@ const EntryCard = ({ entry, index }) => {
             flexShrink: 0,
           }}
         >
-          {entry.emoji || '😊'}
+          {entry.emoji || '🚀'}
         </Box>
         <Box sx={{ flex: 1, minWidth: 0 }}>
           <Typography sx={{ fontWeight: 500, color: '#1F2937', fontSize: '0.9rem', lineHeight: 1.3 }}>
@@ -106,7 +106,7 @@ const GuestbookList = ({ refresh }) => {
 
   if (entries.length === 0) return (
     <Box sx={{ textAlign: 'center', py: 8 }}>
-      <Typography sx={{ fontSize: '2.5rem', mb: 1.5 }}>✉️</Typography>
+      <Typography sx={{ fontSize: '2.5rem', mb: 1.5 }}>💬</Typography>
       <Typography variant="body2" sx={{ color: '#6B7280', fontWeight: 400 }}>아직 방명록이 없어요.</Typography>
       <Typography variant="caption" sx={{ color: '#9CA3AF', mt: 0.5, display: 'block' }}>첫 번째 방명록을 남겨주세요!</Typography>
     </Box>

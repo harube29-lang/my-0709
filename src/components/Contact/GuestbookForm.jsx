@@ -11,8 +11,8 @@ import { supabase } from '../../lib/supabase'
 
 const orangeTheme = createTheme({ palette: { primary: { main: '#FF7A00' } } })
 
-const EMOJIS = ['😊', '😍', '🔥', '✨', '👍', '🎉', '💪', '🌟']
-const INIT = { author_name: '', message: '', affiliation: '', email: '', is_public_email: false, emoji: '😊' }
+const EMOJIS = ['🚀', '⚡', '💡', '🎯', '✨', '🔥', '🛠️', '💬']
+const INIT = { author_name: '', message: '', affiliation: '', email: '', is_public_email: false, emoji: '🚀' }
 
 const GuestbookForm = ({ onSuccess }) => {
   const [form, setForm] = useState(INIT)
@@ -138,7 +138,7 @@ const GuestbookForm = ({ onSuccess }) => {
               transition: 'all 0.22s ease',
             }}
           >
-            {loading ? '저장 중...' : '방명록 남기기 ✉️'}
+            {loading ? '저장 중...' : '방명록 남기기 →'}
           </Button>
         </Box>
       </ThemeProvider>
