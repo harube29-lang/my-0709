@@ -185,28 +185,28 @@ const MyPage = () => {
         <Box sx={{ bgcolor: C.white, pb: 0 }}>
 
           {/* 상단 헤더 행 */}
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', px: 2, pt: 2, pb: 0.5 }}>
+          <Box sx={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'space-between', px: 2, pt: 2, pb: 0.5 }}>
             <Typography sx={{ fontSize: '1rem', fontWeight: 600, color: C.black, letterSpacing: '-0.3px' }}>
               {profile?.nickname || 'My Profile'}
             </Typography>
             <IconButton size="small" onClick={() => setMenuOpen(v => !v)} sx={{ color: C.black }}>
               <MoreHorizIcon />
             </IconButton>
-          </Box>
 
-          {/* 드롭다운 메뉴 (설정/로그아웃) */}
-          {menuOpen && (
-            <Box sx={{
-              position: 'absolute', right: 16, zIndex: 10,
-              bgcolor: C.white, borderRadius: 2, boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
-              border: `1px solid ${C.grayLight}`, overflow: 'hidden', minWidth: 140,
-            }}>
-              <Box onClick={async () => { await signOut(); navigate('/login') }}
-                sx={{ px: 2, py: 1.2, cursor: 'pointer', '&:hover': { bgcolor: C.grayBg } }}>
-                <Typography sx={{ fontSize: '0.85rem', color: '#EF4444', fontWeight: 500 }}>로그아웃</Typography>
+            {/* 드롭다운 메뉴 (설정/로그아웃) */}
+            {menuOpen && (
+              <Box sx={{
+                position: 'absolute', right: 0, top: '110%', zIndex: 20,
+                bgcolor: C.white, borderRadius: 2, boxShadow: '0 8px 24px rgba(0,0,0,0.14)',
+                border: `1px solid ${C.grayLight}`, overflow: 'hidden', minWidth: 140,
+              }}>
+                <Box onClick={async () => { setMenuOpen(false); await signOut(); navigate('/login') }}
+                  sx={{ px: 2, py: 1.4, cursor: 'pointer', '&:hover': { bgcolor: C.grayBg } }}>
+                  <Typography sx={{ fontSize: '0.85rem', color: '#EF4444', fontWeight: 500 }}>로그아웃</Typography>
+                </Box>
               </Box>
-            </Box>
-          )}
+            )}
+          </Box>
 
           {/* 프로필 정보 행 */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, px: 2, pt: 1.5, pb: 2 }}>
@@ -215,13 +215,15 @@ const MyPage = () => {
             <Box sx={{
               background: gradientBorder,
               borderRadius: '50%',
-              p: '2.5px',
+              p: '3px',
+              width: 96,
+              height: 96,
               flexShrink: 0,
               boxShadow: `0 4px 20px rgba(255,122,0,0.35)`,
             }}>
-              <Box sx={{ width: 86, height: 86, borderRadius: '50%', overflow: 'hidden', border: '2.5px solid #fff' }}>
+              <Box sx={{ width: '100%', height: '100%', borderRadius: '50%', bgcolor: '#fff', p: '2px' }}>
                 <Box component="img" src={avatarSrc} alt="profile"
-                  sx={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  sx={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover', display: 'block' }} />
               </Box>
             </Box>
 

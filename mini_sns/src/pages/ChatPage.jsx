@@ -25,13 +25,34 @@ const MOCK_MESSAGES = [
 const ChatPage = () => {
   const [activeRoom, setActiveRoom] = useState(null)
   const [msgInput, setMsgInput] = useState('')
+  const [messages, setMessages] = useState(MOCK_MESSAGES)
+  const messagesEndRef = useState(null)
+
+  const handleSend = () => {
+    if (!msgInput.trim()) return
+    const now = new Date()
+    const hh = now.getHours()
+    const mm = String(now.getMinutes()).padStart(2, '0')
+    const timeStr = `${hh >= 12 ? '오후' : '오전'} ${hh > 12 ? hh - 12 : hh}:${mm}`
+    setMessages(prev => [...prev, { id: Date.now(), sender: 'me', text: msgInput.trim(), time: timeStr }])
+    setMsgInput('')
+  }
+
+  const handleEnter = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend() }
+  }
+
+  const handleBack = () => {
+    setActiveRoom(null)
+    setMessages(MOCK_MESSAGES)
+  }
 
   if (activeRoom) {
     return (
-      <Box sx={{ maxWidth: 480, mx: 'auto', bgcolor: '#FFF8F5', height: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <Box sx={{ maxWidth: 480, mx: 'auto', bgcolor: '#FFF8F5', height: '100dvh', display: 'flex', flexDirection: 'column' }}>
         {/* 채팅방 헤더 */}
-        <Box sx={{ display: 'flex', alignItems: 'center', px: 1, py: 1.5, bgcolor: '#fff', borderBottom: '1px solid #EFD9D4' }}>
-          <IconButton onClick={() => setActiveRoom(null)} sx={{ color: '#6D4C41' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', px: 1, py: 1.5, bgcolor: '#fff', borderBottom: '1px solid #EFD9D4', flexShrink: 0 }}>
+          <IconButton onClick={handleBack} sx={{ color: '#6D4C41' }}>
             <ArrowBackIcon />
           </IconButton>
           <Avatar src={activeRoom.avatar} sx={{ width: 36, height: 36, mx: 1 }} />
@@ -50,7 +71,7 @@ const ChatPage = () => {
 
         {/* 메시지 목록 */}
         <Box sx={{ flex: 1, overflow: 'auto', px: 2, py: 2, display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-          {MOCK_MESSAGES.map((msg) => (
+          {messages.map((msg) => (
             <Box
               key={msg.id}
               sx={{
@@ -61,7 +82,7 @@ const ChatPage = () => {
               }}
             >
               {msg.sender === 'other' && (
-                <Avatar src={activeRoom.avatar} sx={{ width: 28, height: 28 }} />
+                <Avatar src={activeRoom.avatar} sx={{ width: 28, height: 28, flexShrink: 0 }} />
               )}
               <Box sx={{ maxWidth: '70%' }}>
                 <Paper
@@ -78,23 +99,33 @@ const ChatPage = () => {
                     {msg.text}
                   </Typography>
                 </Paper>
-                <Typography variant="caption" sx={{ color: '#BCAAA4', px: 0.5 }}>{msg.time}</Typography>
+                <Typography variant="caption" sx={{ color: '#BCAAA4', px: 0.5, display: 'block', textAlign: msg.sender === 'me' ? 'right' : 'left' }}>
+                  {msg.time}
+                </Typography>
               </Box>
             </Box>
           ))}
+          <Box ref={messagesEndRef[0]} />
         </Box>
 
         {/* 입력창 */}
-        <Box sx={{ px: 2, py: 1.5, bgcolor: '#fff', borderTop: '1px solid #EFD9D4', display: 'flex', gap: 1 }}>
+        <Box sx={{ px: 2, py: 1.5, bgcolor: '#fff', borderTop: '1px solid #EFD9D4', display: 'flex', gap: 1, alignItems: 'center', flexShrink: 0 }}>
           <TextField
             fullWidth
             size="small"
             placeholder="메시지를 입력하세요"
             value={msgInput}
             onChange={(e) => setMsgInput(e.target.value)}
+            onKeyDown={handleEnter}
+            multiline
+            maxRows={3}
             sx={{ '& .MuiOutlinedInput-root': { borderRadius: 20 } }}
           />
-          <IconButton sx={{ color: '#6D4C41' }}>
+          <IconButton
+            onClick={handleSend}
+            disabled={!msgInput.trim()}
+            sx={{ color: msgInput.trim() ? '#6D4C41' : '#BCAAA4', flexShrink: 0 }}
+          >
             <SendIcon />
           </IconButton>
         </Box>
