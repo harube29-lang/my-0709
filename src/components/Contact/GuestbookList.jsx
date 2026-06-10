@@ -71,6 +71,33 @@ const EntryCard = ({ entry, index }) => {
         {entry.message}
       </Typography>
 
+      {/* 별점 + 키워드 */}
+      {(entry.rating > 0 || entry.keyword) && (
+        <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center', mt: 1.5, flexWrap: 'wrap' }}>
+          {entry.rating > 0 && (
+            <Typography sx={{ fontSize: '0.85rem', color: '#FF7A00', letterSpacing: 1 }}>
+              {'★'.repeat(entry.rating)}{'☆'.repeat(5 - entry.rating)}
+            </Typography>
+          )}
+          {entry.keyword && (
+            <Box sx={{ display: 'inline-block', bgcolor: '#FFF4EB', color: '#FF7A00', fontSize: '0.72rem', fontWeight: 500, px: 1, py: 0.3, borderRadius: 1, border: '1px solid #FFD9B3' }}>
+              {entry.keyword}
+            </Box>
+          )}
+        </Box>
+      )}
+
+      {/* 메타 정보 (지역·나이대·경로) */}
+      {(entry.region || entry.age_group || entry.how_found) && (
+        <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mt: 1.2 }}>
+          {[entry.region, entry.age_group, entry.how_found].filter(Boolean).map(tag => (
+            <Box key={tag} sx={{ fontSize: '0.68rem', color: '#9CA3AF', bgcolor: '#F9FAFB', border: '1px solid #E5E7EB', px: 0.8, py: 0.2, borderRadius: 1 }}>
+              {tag}
+            </Box>
+          ))}
+        </Box>
+      )}
+
       {/* 이메일 (공개 시) */}
       {entry.is_public_email && entry.email && (
         <Typography variant="caption" sx={{ color: '#9CA3AF', mt: 1.2, display: 'block', fontWeight: 400 }}>
@@ -90,7 +117,7 @@ const GuestbookList = ({ refresh }) => {
       setLoading(true)
       const { data } = await supabase
         .from('guestbook')
-        .select('id, author_name, message, affiliation, email, is_public_email, emoji, created_at')
+        .select('id, author_name, message, affiliation, email, is_public_email, emoji, created_at, keyword, rating, region, age_group, how_found')
         .order('created_at', { ascending: false })
       setEntries(data || [])
       setLoading(false)
