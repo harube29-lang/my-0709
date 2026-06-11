@@ -10,7 +10,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
 import { useNavigate } from 'react-router-dom'
 import Layout from '../components/Layout'
-import CommentModal from '../components/CommentModal'
+import CommentSection from '../components/CommentSection'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../hooks/useAuth'
 import { formatDistanceToNow } from '../utils/dateUtils'
@@ -21,9 +21,9 @@ const HomePage = () => {
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
   const [selectedPost, setSelectedPost] = useState(null)
-  const [commentOpen, setCommentOpen] = useState(false)
   const [liked, setLiked] = useState(false)
   const [likesCount, setLikesCount] = useState(0)
+  const [commentCount, setCommentCount] = useState(0)
 
   useEffect(() => {
     fetchPosts()
@@ -33,6 +33,7 @@ const HomePage = () => {
     if (selectedPost) {
       setLiked(selectedPost.user_liked || false)
       setLikesCount(selectedPost.likes_count || 0)
+      setCommentCount(selectedPost.comments_count || 0)
     }
   }, [selectedPost])
 
@@ -149,7 +150,7 @@ const HomePage = () => {
       {/* 게시물 상세 모달 */}
       <Modal
         open={!!selectedPost}
-        onClose={() => { setSelectedPost(null); setCommentOpen(false) }}
+        onClose={() => setSelectedPost(null)}
         closeAfterTransition
         slots={{ backdrop: Backdrop }}
         slotProps={{ backdrop: { sx: { backdropFilter: 'blur(3px)', bgcolor: 'rgba(0,0,0,0.6)' } } }}
@@ -185,7 +186,7 @@ const HomePage = () => {
                     )}
                   </Box>
                   <Typography variant="caption" sx={{ color: '#BCAAA4', mr: 1 }}>{formatDistanceToNow(selectedPost.created_at)}</Typography>
-                  <IconButton size="small" onClick={() => { setSelectedPost(null); setCommentOpen(false) }} sx={{ color: '#9C786C' }}>
+                  <IconButton size="small" onClick={() => setSelectedPost(null)} sx={{ color: '#9C786C' }}>
                     <CloseIcon fontSize="small" />
                   </IconButton>
                 </Box>
@@ -199,17 +200,15 @@ const HomePage = () => {
                   onError={(e) => { e.target.src = `https://picsum.photos/seed/${selectedPost.id}/400/400` }}
                 />
 
-                {/* 좋아요·댓글 */}
+                {/* 좋아요·댓글 카운트 */}
                 <Box sx={{ px: 1.5, pt: 0.5 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <IconButton size="small" onClick={handleLike} sx={{ color: liked ? '#e53935' : '#795548' }}>
                       {liked ? <FavoriteIcon fontSize="small" /> : <FavoriteBorderIcon fontSize="small" />}
                     </IconButton>
                     <Typography variant="caption" sx={{ color: '#795548', fontWeight: 600, mr: 1.5 }}>{likesCount}</Typography>
-                    <IconButton size="small" onClick={() => setCommentOpen(true)} sx={{ color: '#795548' }}>
-                      <ChatBubbleOutlinedIcon fontSize="small" />
-                    </IconButton>
-                    <Typography variant="caption" sx={{ color: '#795548', fontWeight: 600 }}>{selectedPost.comments_count}</Typography>
+                    <ChatBubbleOutlinedIcon sx={{ fontSize: 18, color: '#795548', mr: 0.5 }} />
+                    <Typography variant="caption" sx={{ color: '#795548', fontWeight: 600 }}>{commentCount}</Typography>
                   </Box>
 
                   {selectedPost.caption && (
@@ -220,20 +219,22 @@ const HomePage = () => {
                     </Box>
                   )}
                   {selectedPost.hashtags && (
-                    <Box sx={{ px: 0.5, pb: 1.5 }}>
+                    <Box sx={{ px: 0.5, pb: 1 }}>
                       <Typography variant="caption" sx={{ color: '#6D4C41', fontWeight: 500 }}>{selectedPost.hashtags}</Typography>
                     </Box>
                   )}
                 </Box>
+
+                {/* 댓글 섹션 — 인라인 */}
+                <CommentSection
+                  postId={selectedPost.id}
+                  onCountChange={setCommentCount}
+                />
               </>
             )}
           </Box>
         </Fade>
       </Modal>
-
-      {selectedPost && (
-        <CommentModal open={commentOpen} onClose={() => setCommentOpen(false)} postId={selectedPost.id} />
-      )}
     </Layout>
   )
 }

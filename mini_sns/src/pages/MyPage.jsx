@@ -19,7 +19,7 @@ import { supabase } from '../lib/supabase'
 import { useAuth } from '../hooks/useAuth'
 import { useNavigate } from 'react-router-dom'
 import { formatDistanceToNow } from '../utils/dateUtils'
-import CommentModal from '../components/CommentModal'
+import CommentSection from '../components/CommentSection'
 
 // ── 목업 데이터 ──────────────────────────────────────
 const MOCK_HIGHLIGHTS = [
@@ -116,9 +116,9 @@ const MyPage = () => {
   const [loading, setLoading] = useState(true)
   const [tab, setTab] = useState(0)
   const [selectedPost, setSelectedPost] = useState(null)
-  const [commentOpen, setCommentOpen] = useState(false)
   const [liked, setLiked] = useState(false)
   const [likesCount, setLikesCount] = useState(0)
+  const [commentCount, setCommentCount] = useState(0)
   const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
@@ -130,6 +130,7 @@ const MyPage = () => {
     if (selectedPost) {
       setLiked(false)
       setLikesCount(selectedPost.likes_count || 0)
+      setCommentCount(selectedPost.comments_count || 0)
     }
   }, [selectedPost])
 
@@ -501,7 +502,7 @@ const MyPage = () => {
       {/* ── 게시물 상세 모달 ────────────────────── */}
       <Modal
         open={!!selectedPost}
-        onClose={() => { setSelectedPost(null); setCommentOpen(false) }}
+        onClose={() => setSelectedPost(null)}
         closeAfterTransition
         slots={{ backdrop: Backdrop }}
         slotProps={{ backdrop: { sx: { backdropFilter: 'blur(4px)', bgcolor: 'rgba(0,0,0,0.65)' } } }}
@@ -515,6 +516,7 @@ const MyPage = () => {
           }}>
             {selectedPost && (
               <>
+                {/* 모달 헤더 */}
                 <Box sx={{
                   display: 'flex', alignItems: 'center', px: 2, py: 1.2,
                   borderBottom: '1px solid #F3F4F6', position: 'sticky', top: 0, bgcolor: C.white, zIndex: 1,
@@ -539,26 +541,25 @@ const MyPage = () => {
                   <Typography sx={{ fontSize: '0.72rem', color: C.grayLight, mr: 1 }}>
                     {formatDistanceToNow(selectedPost.created_at)}
                   </Typography>
-                  <IconButton size="small" onClick={() => { setSelectedPost(null); setCommentOpen(false) }}
-                    sx={{ color: C.gray }}>
+                  <IconButton size="small" onClick={() => setSelectedPost(null)} sx={{ color: C.gray }}>
                     <CloseIcon fontSize="small" />
                   </IconButton>
                 </Box>
 
+                {/* 이미지 */}
                 <Box component="img" src={selectedPost.image_url} alt="post"
                   sx={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', display: 'block' }}
                   onError={e => { e.target.src = `https://picsum.photos/seed/${selectedPost.id}/400/400` }} />
 
+                {/* 좋아요·댓글 카운트 */}
                 <Box sx={{ px: 2, pt: 1 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
                     <IconButton size="small" onClick={handleLike} sx={{ color: liked ? '#EF4444' : C.black, pl: 0 }}>
                       {liked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                     </IconButton>
                     <Typography sx={{ fontSize: '0.82rem', fontWeight: 600, color: C.black, mr: 1.5 }}>{likesCount}</Typography>
-                    <IconButton size="small" onClick={() => setCommentOpen(true)} sx={{ color: C.black }}>
-                      <ChatBubbleOutlinedIcon />
-                    </IconButton>
-                    <Typography sx={{ fontSize: '0.82rem', fontWeight: 600, color: C.black }}>{selectedPost.comments_count || 0}</Typography>
+                    <ChatBubbleOutlinedIcon sx={{ fontSize: 20, color: C.black, mr: 0.5 }} />
+                    <Typography sx={{ fontSize: '0.82rem', fontWeight: 600, color: C.black }}>{commentCount}</Typography>
                   </Box>
 
                   {selectedPost.caption && (
@@ -568,18 +569,20 @@ const MyPage = () => {
                     </Typography>
                   )}
                   {selectedPost.hashtags && (
-                    <Typography sx={{ fontSize: '0.8rem', color: C.orange, mb: 1.5 }}>{selectedPost.hashtags}</Typography>
+                    <Typography sx={{ fontSize: '0.8rem', color: C.orange, mb: 1 }}>{selectedPost.hashtags}</Typography>
                   )}
                 </Box>
+
+                {/* 댓글 섹션 — 인라인 */}
+                <CommentSection
+                  postId={selectedPost.id}
+                  onCountChange={setCommentCount}
+                />
               </>
             )}
           </Box>
         </Fade>
       </Modal>
-
-      {selectedPost && (
-        <CommentModal open={commentOpen} onClose={() => setCommentOpen(false)} postId={selectedPost.id} />
-      )}
     </Layout>
   )
 }
