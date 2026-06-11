@@ -32,15 +32,21 @@ export const CAFE_IMAGES = [
   'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=400&h=400&fit=crop', // 디저트 플레이트
 ]
 
-export const getRandomCafeImage = () =>
-  CAFE_IMAGES[Math.floor(Math.random() * CAFE_IMAGES.length)]
+// 새 게시물 작성 시 — 연속 중복 방지
+let _lastRandomIndex = -1
+export const getRandomCafeImage = () => {
+  let idx
+  do {
+    idx = Math.floor(Math.random() * CAFE_IMAGES.length)
+  } while (idx === _lastRandomIndex)
+  _lastRandomIndex = idx
+  return CAFE_IMAGES[idx]
+}
 
-export const getCafeImageById = (id) =>
-  CAFE_IMAGES[id.charCodeAt(0) % CAFE_IMAGES.length]
-
-export const resolvePostImage = (url, id) => {
+// 게시물 목록 — 순서(index) 기반으로 중복 없이 순차 배분
+export const resolvePostImage = (url, listIndex) => {
   if (!url || url.includes('loremflickr.com') || url.includes('picsum.photos')) {
-    return getCafeImageById(id)
+    return CAFE_IMAGES[listIndex % CAFE_IMAGES.length]
   }
   return url
 }

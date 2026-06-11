@@ -359,7 +359,7 @@ const MyPage = () => {
             </Box>
           ) : (
             <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '2px', mt: '2px' }}>
-              {posts.map(post => (
+              {posts.map((post, idx) => (
                 <Box
                   key={post.id}
                   onClick={() => setSelectedPost(post)}
@@ -373,7 +373,7 @@ const MyPage = () => {
                   <Box
                     className="thumb"
                     component="img"
-                    src={getMyPostImage(post.image_url, post.id)}
+                    src={getMyPostImage(post.image_url, idx)}
                     alt="post"
                     sx={{
                       width: '100%', aspectRatio: '1/1', objectFit: 'cover', display: 'block',

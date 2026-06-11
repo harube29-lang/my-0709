@@ -110,7 +110,7 @@ const HomePage = () => {
             gridTemplateColumns: 'repeat(3, 1fr)',
             gap: '10px',
           }}>
-            {posts.map((post) => (
+            {posts.map((post, idx) => (
               <Box
                 key={post.id}
                 onClick={() => setSelectedPost(post)}
@@ -122,7 +122,7 @@ const HomePage = () => {
               >
                 <Box
                   component="img"
-                  src={getPostImage(post.image_url, post.id)}
+                  src={getPostImage(post.image_url, idx)}
                   alt="post"
                   sx={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', display: 'block' }}
                   onError={(e) => { e.target.onerror = null; e.target.src = CAFE_IMAGES[0] }}
