@@ -5,7 +5,7 @@ import LocalCafeIcon from '@mui/icons-material/LocalCafe'
 const TopBar = () => {
   return (
     <AppBar position="fixed" elevation={0} sx={{ bgcolor: '#fff', borderBottom: '1px solid #EFD9D4', zIndex: 1200 }}>
-      <Toolbar sx={{ justifyContent: 'space-between', minHeight: '52px !important', px: 2 }}>
+      <Toolbar sx={{ justifyContent: 'space-between', minHeight: '52px !important', px: 2, maxWidth: 480, width: '100%', mx: 'auto' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
           <LocalCafeIcon sx={{ color: '#6D4C41', fontSize: 26 }} />
           <Typography

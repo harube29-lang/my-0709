@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import {
-  Box, Typography, CircularProgress, Grid, Avatar,
+  Box, Typography, CircularProgress, Avatar,
   Modal, Backdrop, Fade, IconButton
 } from '@mui/material'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
@@ -96,43 +96,41 @@ const HomePage = () => {
           <Typography variant="body2" sx={{ color: '#BCAAA4', mt: 0.5 }}>첫 번째 카페 리뷰를 올려보세요!</Typography>
         </Box>
       ) : (
-        <Grid container spacing={0.3} sx={{ pt: 0.3 }}>
+        <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '2px', pt: '2px' }}>
           {posts.map((post) => (
-            <Grid item xs={4} key={post.id}>
+            <Box
+              key={post.id}
+              onClick={() => setSelectedPost(post)}
+              sx={{ position: 'relative', cursor: 'pointer', '&:hover .overlay': { opacity: 1 } }}
+            >
               <Box
-                onClick={() => setSelectedPost(post)}
-                sx={{ position: 'relative', cursor: 'pointer', '&:hover .overlay': { opacity: 1 } }}
+                component="img"
+                src={post.image_url}
+                alt="post"
+                sx={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', display: 'block' }}
+                onError={(e) => { e.target.src = `https://picsum.photos/seed/${post.id}/200/200` }}
+              />
+              <Box
+                className="overlay"
+                sx={{
+                  position: 'absolute', inset: 0,
+                  bgcolor: 'rgba(0,0,0,0.3)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1.5,
+                  opacity: 0, transition: 'opacity 0.2s',
+                }}
               >
-                <Box
-                  component="img"
-                  src={post.image_url}
-                  alt="post"
-                  sx={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', display: 'block' }}
-                  onError={(e) => { e.target.src = `https://picsum.photos/seed/${post.id}/200/200` }}
-                />
-                {/* 호버 오버레이 */}
-                <Box
-                  className="overlay"
-                  sx={{
-                    position: 'absolute', inset: 0,
-                    bgcolor: 'rgba(0,0,0,0.3)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1.5,
-                    opacity: 0, transition: 'opacity 0.2s',
-                  }}
-                >
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.4 }}>
-                    <FavoriteIcon sx={{ color: '#fff', fontSize: 16 }} />
-                    <Typography variant="caption" sx={{ color: '#fff', fontWeight: 700 }}>{post.likes_count}</Typography>
-                  </Box>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.4 }}>
-                    <ChatBubbleOutlinedIcon sx={{ color: '#fff', fontSize: 16 }} />
-                    <Typography variant="caption" sx={{ color: '#fff', fontWeight: 700 }}>{post.comments_count}</Typography>
-                  </Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.4 }}>
+                  <FavoriteIcon sx={{ color: '#fff', fontSize: 16 }} />
+                  <Typography variant="caption" sx={{ color: '#fff', fontWeight: 700 }}>{post.likes_count}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.4 }}>
+                  <ChatBubbleOutlinedIcon sx={{ color: '#fff', fontSize: 16 }} />
+                  <Typography variant="caption" sx={{ color: '#fff', fontWeight: 700 }}>{post.comments_count}</Typography>
                 </Box>
               </Box>
-            </Grid>
+            </Box>
           ))}
-        </Grid>
+        </Box>
       )}
 
       {/* 게시물 상세 모달 */}

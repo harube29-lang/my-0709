@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import {
-  Box, Avatar, Typography, Grid, IconButton, CircularProgress,
+  Box, Avatar, Typography, IconButton, CircularProgress,
   Modal, Backdrop, Fade, Button, Tabs, Tab, Chip, Divider
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
@@ -353,47 +353,46 @@ const MyPage = () => {
               </Typography>
             </Box>
           ) : (
-            <Grid container spacing={0.3} sx={{ mt: 0.3 }}>
+            <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '2px', mt: '2px' }}>
               {posts.map(post => (
-                <Grid item xs={4} key={post.id}>
+                <Box
+                  key={post.id}
+                  onClick={() => setSelectedPost(post)}
+                  sx={{
+                    position: 'relative', cursor: 'pointer',
+                    overflow: 'hidden',
+                    '&:hover .thumb': { transform: 'scale(1.06)' },
+                    '&:hover .overlay': { opacity: 1 },
+                  }}
+                >
                   <Box
-                    onClick={() => setSelectedPost(post)}
+                    className="thumb"
+                    component="img"
+                    src={post.image_url}
+                    alt="post"
                     sx={{
-                      position: 'relative', cursor: 'pointer',
-                      overflow: 'hidden',
-                      '&:hover .thumb': { transform: 'scale(1.06)' },
-                      '&:hover .overlay': { opacity: 1 },
+                      width: '100%', aspectRatio: '1/1', objectFit: 'cover', display: 'block',
+                      transition: 'transform 0.3s ease',
                     }}
-                  >
-                    <Box
-                      className="thumb"
-                      component="img"
-                      src={post.image_url}
-                      alt="post"
-                      sx={{
-                        width: '100%', aspectRatio: '1/1', objectFit: 'cover', display: 'block',
-                        transition: 'transform 0.3s ease',
-                      }}
-                      onError={e => { e.target.src = `https://picsum.photos/seed/${post.id}/200/200` }}
-                    />
-                    <Box className="overlay" sx={{
-                      position: 'absolute', inset: 0, bgcolor: 'rgba(0,0,0,0.28)',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1.5,
-                      opacity: 0, transition: 'opacity 0.25s',
-                    }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.4 }}>
-                        <FavoriteIcon sx={{ color: '#fff', fontSize: 15 }} />
-                        <Typography sx={{ color: '#fff', fontSize: '0.72rem', fontWeight: 700 }}>{post.likes_count}</Typography>
-                      </Box>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.4 }}>
-                        <ChatBubbleOutlinedIcon sx={{ color: '#fff', fontSize: 15 }} />
-                        <Typography sx={{ color: '#fff', fontSize: '0.72rem', fontWeight: 700 }}>{post.comments_count || 0}</Typography>
-                      </Box>
+                    onError={e => { e.target.src = `https://picsum.photos/seed/${post.id}/200/200` }}
+                  />
+                  <Box className="overlay" sx={{
+                    position: 'absolute', inset: 0, bgcolor: 'rgba(0,0,0,0.28)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1.5,
+                    opacity: 0, transition: 'opacity 0.25s',
+                  }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.4 }}>
+                      <FavoriteIcon sx={{ color: '#fff', fontSize: 15 }} />
+                      <Typography sx={{ color: '#fff', fontSize: '0.72rem', fontWeight: 700 }}>{post.likes_count}</Typography>
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.4 }}>
+                      <ChatBubbleOutlinedIcon sx={{ color: '#fff', fontSize: 15 }} />
+                      <Typography sx={{ color: '#fff', fontSize: '0.72rem', fontWeight: 700 }}>{post.comments_count || 0}</Typography>
                     </Box>
                   </Box>
-                </Grid>
+                </Box>
               ))}
-            </Grid>
+            </Box>
           )}
         </TabPanel>
 
@@ -430,34 +429,32 @@ const MyPage = () => {
 
         {/* Tab 2: Cafe Picks */}
         <TabPanel value={tab} index={2}>
-          <Grid container spacing={0.3} sx={{ mt: 0.3 }}>
+          <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '2px', mt: '2px' }}>
             {MOCK_CAFE_PICKS.map(cafe => (
-              <Grid item xs={4} key={cafe.id}>
-                <Box sx={{
-                  position: 'relative', cursor: 'pointer', overflow: 'hidden',
-                  '&:hover .cafe-thumb': { transform: 'scale(1.06)' },
-                  '&:hover .cafe-overlay': { opacity: 1 },
+              <Box key={cafe.id} sx={{
+                position: 'relative', cursor: 'pointer', overflow: 'hidden',
+                '&:hover .cafe-thumb': { transform: 'scale(1.06)' },
+                '&:hover .cafe-overlay': { opacity: 1 },
+              }}>
+                <Box
+                  className="cafe-thumb"
+                  component="img"
+                  src={cafe.img}
+                  alt={cafe.name}
+                  sx={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', display: 'block', transition: 'transform 0.3s ease' }}
+                  onError={e => { e.target.src = `https://picsum.photos/seed/cafe${cafe.id}/200/200` }}
+                />
+                <Box className="cafe-overlay" sx={{
+                  position: 'absolute', inset: 0, opacity: 0, transition: 'opacity 0.25s',
+                  background: 'linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 55%)',
+                  display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', p: 1,
                 }}>
-                  <Box
-                    className="cafe-thumb"
-                    component="img"
-                    src={cafe.img}
-                    alt={cafe.name}
-                    sx={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', display: 'block', transition: 'transform 0.3s ease' }}
-                    onError={e => { e.target.src = `https://picsum.photos/seed/cafe${cafe.id}/200/200` }}
-                  />
-                  <Box className="cafe-overlay" sx={{
-                    position: 'absolute', inset: 0, opacity: 0, transition: 'opacity 0.25s',
-                    background: 'linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 55%)',
-                    display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', p: 1,
-                  }}>
-                    <Typography sx={{ color: '#fff', fontSize: '0.68rem', fontWeight: 600, lineHeight: 1.2 }}>{cafe.name}</Typography>
-                    <Typography sx={{ color: 'rgba(255,255,255,0.8)', fontSize: '0.6rem' }}>{cafe.location}</Typography>
-                  </Box>
+                  <Typography sx={{ color: '#fff', fontSize: '0.68rem', fontWeight: 600, lineHeight: 1.2 }}>{cafe.name}</Typography>
+                  <Typography sx={{ color: 'rgba(255,255,255,0.8)', fontSize: '0.6rem' }}>{cafe.location}</Typography>
                 </Box>
-              </Grid>
+              </Box>
             ))}
-          </Grid>
+          </Box>
         </TabPanel>
 
         {/* Tab 3: Guestbook */}
