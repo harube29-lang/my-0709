@@ -379,7 +379,7 @@ const MyPage = () => {
                       width: '100%', aspectRatio: '1/1', objectFit: 'cover', display: 'block',
                       transition: 'transform 0.3s ease',
                     }}
-                    onError={e => { e.target.onerror = null; e.target.src = CAFE_IMAGES[0] }}
+                    onError={e => { e.target.onerror = null; e.target.src = CAFE_IMAGES[(idx + 12) % CAFE_IMAGES.length] }}
                   />
                   <Box className="overlay" sx={{
                     position: 'absolute', inset: 0, bgcolor: 'rgba(0,0,0,0.28)',

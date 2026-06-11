@@ -125,7 +125,7 @@ const HomePage = () => {
                   src={getPostImage(post.image_url, idx)}
                   alt="post"
                   sx={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', display: 'block' }}
-                  onError={(e) => { e.target.onerror = null; e.target.src = CAFE_IMAGES[0] }}
+                  onError={(e) => { e.target.onerror = null; e.target.src = CAFE_IMAGES[(idx + 12) % CAFE_IMAGES.length] }}
                 />
                 <Box
                   className="overlay"
