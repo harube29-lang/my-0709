@@ -11,27 +11,9 @@ import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../hooks/useAuth'
 
-const CAFE_IMAGES = [
-  'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&h=400&fit=crop',
-  'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&h=400&fit=crop',
-  'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&h=400&fit=crop',
-  'https://images.unsplash.com/photo-1534778101976-62847782c213?w=400&h=400&fit=crop',
-  'https://images.unsplash.com/photo-1541167760496-1628856ab772?w=400&h=400&fit=crop',
-  'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=400&h=400&fit=crop',
-  'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=400&h=400&fit=crop',
-  'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=400&fit=crop',
-  'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=400&fit=crop',
-  'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=400&h=400&fit=crop',
-  'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=400&h=400&fit=crop',
-  'https://images.unsplash.com/photo-1416339134316-0e91dc9ded92?w=400&h=400&fit=crop',
-  'https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=400&h=400&fit=crop',
-  'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&h=400&fit=crop',
-  'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&h=400&fit=crop',
-  'https://images.unsplash.com/photo-1445116572660-236099ec97a0?w=400&h=400&fit=crop',
-]
+import { getRandomCafeImage } from '../utils/cafeImages'
 
-const getRandomImageUrl = () =>
-  CAFE_IMAGES[Math.floor(Math.random() * CAFE_IMAGES.length)]
+const getRandomImageUrl = getRandomCafeImage
 
 const CreatePostPage = () => {
   const navigate = useNavigate()
