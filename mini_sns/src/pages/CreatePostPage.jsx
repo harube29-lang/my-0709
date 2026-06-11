@@ -62,9 +62,15 @@ const CreatePostPage = () => {
   }
 
   return (
-    <Box sx={{ maxWidth: 480, mx: 'auto', bgcolor: '#FFF8F5', minHeight: '100vh', pb: 1 }}>
+    <Box sx={{ maxWidth: 480, mx: 'auto', bgcolor: '#FFF8F5' }}>
       {/* 헤더 */}
-      <Box sx={{ display: 'flex', alignItems: 'center', px: 1, py: 1, borderBottom: '1px solid #EFD9D4', bgcolor: '#fff', position: 'sticky', top: 0, zIndex: 10 }}>
+      <Box sx={{
+        display: 'flex', alignItems: 'center',
+        px: 1, py: 1,
+        borderBottom: '1px solid #EFD9D4',
+        bgcolor: '#fff',
+        position: 'sticky', top: 0, zIndex: 10,
+      }}>
         <IconButton onClick={() => navigate(-1)} sx={{ color: '#6D4C41' }}>
           <ArrowBackIcon />
         </IconButton>
@@ -103,35 +109,24 @@ const CreatePostPage = () => {
         <IconButton
           onClick={loadNewImage}
           sx={{
-            position: 'absolute',
-            bottom: 12,
-            right: 12,
-            bgcolor: 'rgba(255,255,255,0.85)',
-            color: '#6D4C41',
-            '&:hover': { bgcolor: '#fff' },
-            boxShadow: 2,
+            position: 'absolute', bottom: 12, right: 12,
+            bgcolor: 'rgba(255,255,255,0.85)', color: '#6D4C41',
+            '&:hover': { bgcolor: '#fff' }, boxShadow: 2,
           }}
         >
           <RefreshIcon />
         </IconButton>
-        <Box
-          sx={{
-            position: 'absolute',
-            bottom: 12,
-            left: 12,
-            bgcolor: 'rgba(109,76,65,0.75)',
-            color: '#fff',
-            borderRadius: 10,
-            px: 1.5,
-            py: 0.3,
-          }}
-        >
+        <Box sx={{
+          position: 'absolute', bottom: 12, left: 12,
+          bgcolor: 'rgba(109,76,65,0.75)', color: '#fff',
+          borderRadius: 10, px: 1.5, py: 0.3,
+        }}>
           <Typography variant="caption">이미지 변경 →</Typography>
         </Box>
       </Box>
 
       {/* 입력 폼 */}
-      <Box component="form" onSubmit={handleSubmit} sx={{ px: 2, pt: 2 }}>
+      <Box component="form" onSubmit={handleSubmit} sx={{ px: 2, pt: 1.5, pb: 3 }}>
         <TextField
           fullWidth
           name="caption"
@@ -140,7 +135,7 @@ const CreatePostPage = () => {
           minRows={3}
           value={form.caption}
           onChange={handleChange}
-          sx={{ mb: 2, '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
+          sx={{ mb: 1.5, '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
         />
         <TextField
           fullWidth
@@ -148,7 +143,7 @@ const CreatePostPage = () => {
           label="해시태그 (#카페 #아메리카노)"
           value={form.hashtags}
           onChange={handleChange}
-          sx={{ mb: 2, '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
+          sx={{ mb: 1.5, '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
           InputProps={{ startAdornment: <TagIcon sx={{ color: '#BCAAA4', mr: 1, fontSize: 18 }} /> }}
           size="small"
         />
