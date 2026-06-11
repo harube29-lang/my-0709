@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react'
 import {
   Drawer, Box, Typography, Avatar, TextField, IconButton,
-  List, ListItem, ListItemAvatar, CircularProgress
+  List, ListItem, ListItemAvatar, CircularProgress, Menu, MenuItem
 } from '@mui/material'
 import SendIcon from '@mui/icons-material/Send'
 import CloseIcon from '@mui/icons-material/Close'
-import EditIcon from '@mui/icons-material/Edit'
 import CheckIcon from '@mui/icons-material/Check'
 import ClearIcon from '@mui/icons-material/Clear'
+import MoreVertIcon from '@mui/icons-material/MoreVert'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../hooks/useAuth'
 import { formatDistanceToNow } from '../utils/dateUtils'
@@ -20,6 +20,8 @@ const CommentModal = ({ open, onClose, postId }) => {
   const [submitting, setSubmitting] = useState(false)
   const [editingId, setEditingId] = useState(null)
   const [editContent, setEditContent] = useState('')
+  const [menuAnchor, setMenuAnchor] = useState(null)
+  const [menuCommentId, setMenuCommentId] = useState(null)
 
   useEffect(() => {
     if (open && postId) fetchComments()
@@ -46,9 +48,24 @@ const CommentModal = ({ open, onClose, postId }) => {
     setSubmitting(false)
   }
 
-  const handleEditStart = (comment) => {
-    setEditingId(comment.id)
-    setEditContent(comment.content)
+  const handleMenuOpen = (e, commentId) => {
+    e.stopPropagation()
+    setMenuAnchor(e.currentTarget)
+    setMenuCommentId(commentId)
+  }
+
+  const handleMenuClose = () => {
+    setMenuAnchor(null)
+    setMenuCommentId(null)
+  }
+
+  const handleEditStart = () => {
+    const comment = comments.find(c => c.id === menuCommentId)
+    if (comment) {
+      setEditingId(comment.id)
+      setEditContent(comment.content)
+    }
+    handleMenuClose()
   }
 
   const handleEditCancel = () => {
@@ -64,6 +81,13 @@ const CommentModal = ({ open, onClose, postId }) => {
       .eq('id', commentId)
     setEditingId(null)
     setEditContent('')
+    await fetchComments()
+  }
+
+  const handleDelete = async () => {
+    const id = menuCommentId
+    handleMenuClose()
+    await supabase.from('sns_comments').delete().eq('id', id)
     await fetchComments()
   }
 
@@ -144,10 +168,10 @@ const CommentModal = ({ open, onClose, postId }) => {
                       {user?.id === comment.user_id && (
                         <IconButton
                           size="small"
-                          onClick={() => handleEditStart(comment)}
+                          onClick={(e) => handleMenuOpen(e, comment.id)}
                           sx={{ color: '#BCAAA4', p: 0.3, ml: 0.5, '&:hover': { color: '#6D4C41' } }}
                         >
-                          <EditIcon sx={{ fontSize: 14 }} />
+                          <MoreVertIcon sx={{ fontSize: 16 }} />
                         </IconButton>
                       )}
                     </Box>
@@ -158,6 +182,21 @@ const CommentModal = ({ open, onClose, postId }) => {
           </List>
         )}
       </Box>
+
+      {/* 수정/삭제 메뉴 */}
+      <Menu
+        anchorEl={menuAnchor}
+        open={!!menuAnchor}
+        onClose={handleMenuClose}
+        PaperProps={{ sx: { borderRadius: 2, boxShadow: '0 4px 20px rgba(0,0,0,0.12)', minWidth: 120 } }}
+      >
+        <MenuItem onClick={handleEditStart} sx={{ fontSize: '0.875rem', color: '#3E2723' }}>
+          수정하기
+        </MenuItem>
+        <MenuItem onClick={handleDelete} sx={{ fontSize: '0.875rem', color: '#ef5350' }}>
+          삭제하기
+        </MenuItem>
+      </Menu>
 
       {/* 댓글 입력 */}
       <Box
