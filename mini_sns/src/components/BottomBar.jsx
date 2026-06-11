@@ -5,10 +5,12 @@ import AddIcon from '@mui/icons-material/Add'
 import ChatBubbleOutlinedIcon from '@mui/icons-material/ChatBubbleOutlined'
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth'
 
 const BottomBar = () => {
   const navigate = useNavigate()
   const location = useLocation()
+  const { user } = useAuth()
 
   const getNavValue = () => {
     const path = location.pathname
@@ -57,7 +59,7 @@ const BottomBar = () => {
                 mt: '-20px',
                 pointerEvents: 'auto',
               }}
-              onClick={() => navigate('/create')}
+              onClick={() => user ? navigate('/create') : navigate('/login')}
             >
               <AddIcon />
             </Fab>

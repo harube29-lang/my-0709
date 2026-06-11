@@ -8,6 +8,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite'
 import ChatBubbleOutlinedIcon from '@mui/icons-material/ChatBubbleOutlined'
 import CloseIcon from '@mui/icons-material/Close'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
+import { useNavigate } from 'react-router-dom'
 import Layout from '../components/Layout'
 import CommentModal from '../components/CommentModal'
 import { supabase } from '../lib/supabase'
@@ -16,6 +17,7 @@ import { formatDistanceToNow } from '../utils/dateUtils'
 
 const HomePage = () => {
   const { user } = useAuth()
+  const navigate = useNavigate()
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
   const [selectedPost, setSelectedPost] = useState(null)
@@ -69,7 +71,8 @@ const HomePage = () => {
   }
 
   const handleLike = async () => {
-    if (!user || !selectedPost) return
+    if (!selectedPost) return
+    if (!user) { navigate('/login'); return }
     if (liked) {
       await supabase.from('sns_likes').delete().eq('post_id', selectedPost.id).eq('user_id', user.id)
       setLiked(false)

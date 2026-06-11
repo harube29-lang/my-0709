@@ -10,6 +10,7 @@ const TopBar = () => {
 
   const handleLogoClick = () => {
     if (!user) navigate('/login')
+    else navigate('/')
   }
 
   return (
@@ -17,7 +18,7 @@ const TopBar = () => {
       <Toolbar sx={{ justifyContent: 'space-between', minHeight: '52px !important', px: 2, maxWidth: 480, width: '100%', mx: 'auto' }}>
         <Box
           onClick={handleLogoClick}
-          sx={{ display: 'flex', alignItems: 'center', gap: 0.5, cursor: user ? 'default' : 'pointer' }}
+          sx={{ display: 'flex', alignItems: 'center', gap: 0.5, cursor: 'pointer' }}
         >
           <LocalCafeIcon sx={{ color: '#6D4C41', fontSize: 26 }} />
           <Typography

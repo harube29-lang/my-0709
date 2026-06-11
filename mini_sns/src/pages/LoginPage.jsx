@@ -82,6 +82,18 @@ const LoginPage = () => {
             회원가입
           </Button>
         </Box>
+
+        {/* 체험해보기 버튼 */}
+        <Button
+          onClick={() => navigate('/')}
+          sx={{
+            mt: 2, color: '#BCAAA4', fontSize: '0.85rem',
+            textDecoration: 'underline', textUnderlineOffset: '3px',
+            '&:hover': { color: '#6D4C41', bgcolor: 'transparent' },
+          }}
+        >
+          로그인 없이 체험해보기 →
+        </Button>
       </Box>
     </Box>
   )
