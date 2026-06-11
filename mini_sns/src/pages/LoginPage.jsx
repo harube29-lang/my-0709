@@ -84,17 +84,18 @@ const LoginPage = () => {
         </Box>
 
         {/* 체험해보기 버튼 */}
-        <Button
-          onClick={() => navigate('/')}
-          sx={{
-            mt: 2, color: '#BCAAA4', fontSize: '0.85rem',
-            textDecoration: 'underline', textUnderlineOffset: '3px',
-            display: 'block', width: '100%', textAlign: 'center',
-            '&:hover': { color: '#6D4C41', bgcolor: 'transparent' },
-          }}
-        >
-          로그인 없이 체험해보기 →
-        </Button>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+          <Button
+            onClick={() => navigate('/')}
+            sx={{
+              color: '#BCAAA4', fontSize: '0.85rem',
+              textDecoration: 'underline', textUnderlineOffset: '3px',
+              '&:hover': { color: '#6D4C41', bgcolor: 'transparent' },
+            }}
+          >
+            로그인 없이 체험해보기 →
+          </Button>
+        </Box>
       </Box>
     </Box>
   )
