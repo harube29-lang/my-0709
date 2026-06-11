@@ -63,9 +63,11 @@ const CommentSection = ({ postId, onCountChange }) => {
       user_id: user.id,
       content: newComment.trim(),
     })
-    if (!error) setNewComment('')
+    if (!error) {
+      setNewComment('')
+      await fetchComments()
+    }
     setSubmitting(false)
-    // realtime이 자동으로 fetchComments 호출
   }
 
   // ... 메뉴
@@ -87,16 +89,17 @@ const CommentSection = ({ postId, onCountChange }) => {
   }
   const handleEditCancel = () => { setEditingId(null); setEditContent('') }
 
-  // 수정 저장 — updated_at은 DB 트리거가 자동 갱신
+  // 수정 저장
   const handleEditSave = async (commentId) => {
     if (!editContent.trim()) return
     await supabase
       .from('sns_comments')
       .update({ content: editContent.trim() })
       .eq('id', commentId)
-      .eq('user_id', user.id)   // RLS 보조
+      .eq('user_id', user.id)
     setEditingId(null)
     setEditContent('')
+    await fetchComments()
   }
 
   // 삭제
@@ -107,7 +110,8 @@ const CommentSection = ({ postId, onCountChange }) => {
       .from('sns_comments')
       .delete()
       .eq('id', id)
-      .eq('user_id', user.id)   // RLS 보조
+      .eq('user_id', user.id)
+    await fetchComments()
   }
 
   return (
