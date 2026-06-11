@@ -89,6 +89,7 @@ const LoginPage = () => {
           sx={{
             mt: 2, color: '#BCAAA4', fontSize: '0.85rem',
             textDecoration: 'underline', textUnderlineOffset: '3px',
+            display: 'block', width: '100%', textAlign: 'center',
             '&:hover': { color: '#6D4C41', bgcolor: 'transparent' },
           }}
         >
