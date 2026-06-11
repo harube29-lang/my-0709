@@ -26,7 +26,12 @@ const FALLBACK_IMAGES = [
   'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=400&h=400&fit=crop',
 ]
 
-const getFallback = (id) => FALLBACK_IMAGES[id.charCodeAt(0) % FALLBACK_IMAGES.length]
+const getPostImage = (url, id) => {
+  if (!url || url.includes('loremflickr.com') || url.includes('picsum.photos')) {
+    return FALLBACK_IMAGES[id.charCodeAt(0) % FALLBACK_IMAGES.length]
+  }
+  return url
+}
 
 const HomePage = () => {
   const { user } = useAuth()
@@ -131,10 +136,10 @@ const HomePage = () => {
               >
                 <Box
                   component="img"
-                  src={post.image_url}
+                  src={getPostImage(post.image_url, post.id)}
                   alt="post"
                   sx={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', display: 'block' }}
-                  onError={(e) => { e.target.onerror = null; e.target.src = getFallback(post.id) }}
+                  onError={(e) => { e.target.onerror = null; e.target.src = FALLBACK_IMAGES[0] }}
                 />
                 <Box
                   className="overlay"
@@ -207,10 +212,10 @@ const HomePage = () => {
                 {/* 이미지 */}
                 <Box
                   component="img"
-                  src={selectedPost.image_url}
+                  src={getPostImage(selectedPost.image_url, selectedPost.id)}
                   alt="post"
                   sx={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', display: 'block' }}
-                  onError={(e) => { e.target.onerror = null; e.target.src = getFallback(selectedPost.id) }}
+                  onError={(e) => { e.target.onerror = null; e.target.src = FALLBACK_IMAGES[0] }}
                 />
 
                 {/* 좋아요·댓글 카운트 */}

@@ -66,6 +66,22 @@ const MOCK_GUESTBOOK = [
   { id: 3, name: 'espresso_daily', avatar: 'https://picsum.photos/seed/g3/40/40', msg: 'Cafe Notes 앱 완성도가 진짜 높네요. 개발 과정도 궁금합니다!', time: '1주 전', stars: 4 },
 ]
 
+const MY_FALLBACKS = [
+  'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&h=400&fit=crop',
+  'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&h=400&fit=crop',
+  'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&h=400&fit=crop',
+  'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=400&fit=crop',
+  'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=400&fit=crop',
+  'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=400&h=400&fit=crop',
+]
+
+const getMyPostImage = (url, id) => {
+  if (!url || url.includes('loremflickr.com') || url.includes('picsum.photos')) {
+    return MY_FALLBACKS[id.charCodeAt(0) % MY_FALLBACKS.length]
+  }
+  return url
+}
+
 // ── 컬러 상수 ─────────────────────────────────────────
 const C = {
   orange: '#FF7A00',
@@ -369,13 +385,13 @@ const MyPage = () => {
                   <Box
                     className="thumb"
                     component="img"
-                    src={post.image_url}
+                    src={getMyPostImage(post.image_url, post.id)}
                     alt="post"
                     sx={{
                       width: '100%', aspectRatio: '1/1', objectFit: 'cover', display: 'block',
                       transition: 'transform 0.3s ease',
                     }}
-                    onError={e => { e.target.onerror = null; e.target.src = 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=200&h=200&fit=crop' }}
+                    onError={e => { e.target.onerror = null; e.target.src = MY_FALLBACKS[0] }}
                   />
                   <Box className="overlay" sx={{
                     position: 'absolute', inset: 0, bgcolor: 'rgba(0,0,0,0.28)',
@@ -547,9 +563,9 @@ const MyPage = () => {
                 </Box>
 
                 {/* 이미지 */}
-                <Box component="img" src={selectedPost.image_url} alt="post"
+                <Box component="img" src={getMyPostImage(selectedPost.image_url, selectedPost.id)} alt="post"
                   sx={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', display: 'block' }}
-                  onError={e => { e.target.onerror = null; e.target.src = 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&h=400&fit=crop' }} />
+                  onError={e => { e.target.onerror = null; e.target.src = MY_FALLBACKS[0] }} />
 
                 {/* 좋아요·댓글 카운트 */}
                 <Box sx={{ px: 2, pt: 1 }}>
