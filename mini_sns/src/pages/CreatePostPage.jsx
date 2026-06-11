@@ -62,7 +62,7 @@ const CreatePostPage = () => {
   }
 
   return (
-    <Box sx={{ maxWidth: 480, mx: 'auto', bgcolor: '#FFF8F5', minHeight: '100vh', pb: 3 }}>
+    <Box sx={{ maxWidth: 480, mx: 'auto', bgcolor: '#FFF8F5', minHeight: '100vh', pb: 1 }}>
       {/* 헤더 */}
       <Box sx={{ display: 'flex', alignItems: 'center', px: 1, py: 1, borderBottom: '1px solid #EFD9D4', bgcolor: '#fff', position: 'sticky', top: 0, zIndex: 10 }}>
         <IconButton onClick={() => navigate(-1)} sx={{ color: '#6D4C41' }}>
@@ -158,7 +158,7 @@ const CreatePostPage = () => {
           label="위치 추가"
           value={form.location}
           onChange={handleChange}
-          sx={{ mb: 3, '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
+          sx={{ mb: 2, '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
           InputProps={{ startAdornment: <LocationOnIcon sx={{ color: '#BCAAA4', mr: 1, fontSize: 18 }} /> }}
           size="small"
         />
