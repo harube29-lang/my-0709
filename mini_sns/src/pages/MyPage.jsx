@@ -23,41 +23,41 @@ import CommentSection from '../components/CommentSection'
 
 // ── 목업 데이터 ──────────────────────────────────────
 const MOCK_HIGHLIGHTS = [
-  { label: 'Seoul', img: 'https://loremflickr.com/60/60/coffee?lock=10' },
-  { label: 'Latte', img: 'https://loremflickr.com/60/60/latte?lock=11' },
-  { label: 'Bakery', img: 'https://loremflickr.com/60/60/bakery?lock=12' },
-  { label: 'Roastery', img: 'https://loremflickr.com/60/60/espresso?lock=13' },
-  { label: 'Brunch', img: 'https://loremflickr.com/60/60/brunch?lock=14' },
+  { label: 'Seoul', img: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=60&h=60&fit=crop' },
+  { label: 'Latte', img: 'https://images.unsplash.com/photo-1534778101976-62847782c213?w=60&h=60&fit=crop' },
+  { label: 'Bakery', img: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=60&h=60&fit=crop' },
+  { label: 'Roastery', img: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?w=60&h=60&fit=crop' },
+  { label: 'Brunch', img: 'https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=60&h=60&fit=crop' },
 ]
 
 const MOCK_PROJECTS = [
   {
     id: 1, title: 'Cafe Notes App', desc: '카페 리뷰 SNS 풀스택 프로젝트',
     tags: ['React', 'Supabase', 'MUI'],
-    img: 'https://loremflickr.com/400/220/coffee?lock=20',
+    img: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&h=220&fit=crop',
     link: '#',
   },
   {
     id: 2, title: 'Seoul Cafe Map', desc: '서울 카페 위치 기반 지도 서비스',
     tags: ['Next.js', 'Kakao API'],
-    img: 'https://loremflickr.com/400/220/cafe?lock=21',
+    img: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=400&h=220&fit=crop',
     link: '#',
   },
   {
     id: 3, title: 'Latte Art Guide', desc: '라떼아트 입문자를 위한 인터랙티브 가이드',
     tags: ['React', 'Framer'],
-    img: 'https://loremflickr.com/400/220/latte?lock=22',
+    img: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&h=220&fit=crop',
     link: '#',
   },
 ]
 
 const MOCK_CAFE_PICKS = [
-  { id: 1, name: '어니언 성수', location: '성수동', img: 'https://loremflickr.com/200/200/coffee?lock=30', rating: 5 },
-  { id: 2, name: 'Fritz Coffee', location: '도화동', img: 'https://loremflickr.com/200/200/espresso?lock=31', rating: 5 },
-  { id: 3, name: '테일러커피', location: '합정동', img: 'https://loremflickr.com/200/200/latte?lock=32', rating: 4 },
-  { id: 4, name: '알베르', location: '연남동', img: 'https://loremflickr.com/200/200/cappuccino?lock=33', rating: 5 },
-  { id: 5, name: 'Moment', location: '서촌', img: 'https://loremflickr.com/200/200/cafe?lock=34', rating: 4 },
-  { id: 6, name: '커피한약방', location: '익선동', img: 'https://loremflickr.com/200/200/dessert?lock=35', rating: 5 },
+  { id: 1, name: '어니언 성수', location: '성수동', img: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=200&h=200&fit=crop', rating: 5 },
+  { id: 2, name: 'Fritz Coffee', location: '도화동', img: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=200&h=200&fit=crop', rating: 5 },
+  { id: 3, name: '테일러커피', location: '합정동', img: 'https://images.unsplash.com/photo-1534778101976-62847782c213?w=200&h=200&fit=crop', rating: 4 },
+  { id: 4, name: '알베르', location: '연남동', img: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=200&h=200&fit=crop', rating: 5 },
+  { id: 5, name: 'Moment', location: '서촌', img: 'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=200&h=200&fit=crop', rating: 4 },
+  { id: 6, name: '커피한약방', location: '익선동', img: 'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=200&h=200&fit=crop', rating: 5 },
 ]
 
 const MOCK_GUESTBOOK = [
@@ -375,7 +375,7 @@ const MyPage = () => {
                       width: '100%', aspectRatio: '1/1', objectFit: 'cover', display: 'block',
                       transition: 'transform 0.3s ease',
                     }}
-                    onError={e => { e.target.src = `https://picsum.photos/seed/${post.id}/200/200` }}
+                    onError={e => { e.target.onerror = null; e.target.src = 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=200&h=200&fit=crop' }}
                   />
                   <Box className="overlay" sx={{
                     position: 'absolute', inset: 0, bgcolor: 'rgba(0,0,0,0.28)',
@@ -443,7 +443,7 @@ const MyPage = () => {
                   src={cafe.img}
                   alt={cafe.name}
                   sx={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', display: 'block', transition: 'transform 0.3s ease' }}
-                  onError={e => { e.target.src = `https://picsum.photos/seed/cafe${cafe.id}/200/200` }}
+                  onError={e => { e.target.onerror = null; e.target.src = 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=200&h=200&fit=crop' }}
                 />
                 <Box className="cafe-overlay" sx={{
                   position: 'absolute', inset: 0, opacity: 0, transition: 'opacity 0.25s',
@@ -549,7 +549,7 @@ const MyPage = () => {
                 {/* 이미지 */}
                 <Box component="img" src={selectedPost.image_url} alt="post"
                   sx={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', display: 'block' }}
-                  onError={e => { e.target.src = `https://picsum.photos/seed/${selectedPost.id}/400/400` }} />
+                  onError={e => { e.target.onerror = null; e.target.src = 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&h=400&fit=crop' }} />
 
                 {/* 좋아요·댓글 카운트 */}
                 <Box sx={{ px: 2, pt: 1 }}>

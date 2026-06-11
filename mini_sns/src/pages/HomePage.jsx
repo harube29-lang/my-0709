@@ -15,6 +15,19 @@ import { supabase } from '../lib/supabase'
 import { useAuth } from '../hooks/useAuth'
 import { formatDistanceToNow } from '../utils/dateUtils'
 
+const FALLBACK_IMAGES = [
+  'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&h=400&fit=crop',
+  'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&h=400&fit=crop',
+  'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&h=400&fit=crop',
+  'https://images.unsplash.com/photo-1534778101976-62847782c213?w=400&h=400&fit=crop',
+  'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=400&fit=crop',
+  'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=400&fit=crop',
+  'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=400&h=400&fit=crop',
+  'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=400&h=400&fit=crop',
+]
+
+const getFallback = (id) => FALLBACK_IMAGES[id.charCodeAt(0) % FALLBACK_IMAGES.length]
+
 const HomePage = () => {
   const { user } = useAuth()
   const navigate = useNavigate()
@@ -121,7 +134,7 @@ const HomePage = () => {
                   src={post.image_url}
                   alt="post"
                   sx={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', display: 'block' }}
-                  onError={(e) => { e.target.src = `https://picsum.photos/seed/${post.id}/200/200` }}
+                  onError={(e) => { e.target.onerror = null; e.target.src = getFallback(post.id) }}
                 />
                 <Box
                   className="overlay"
@@ -197,7 +210,7 @@ const HomePage = () => {
                   src={selectedPost.image_url}
                   alt="post"
                   sx={{ width: '100%', aspectRatio: '1/1', objectFit: 'cover', display: 'block' }}
-                  onError={(e) => { e.target.src = `https://picsum.photos/seed/${selectedPost.id}/400/400` }}
+                  onError={(e) => { e.target.onerror = null; e.target.src = getFallback(selectedPost.id) }}
                 />
 
                 {/* 좋아요·댓글 카운트 */}
