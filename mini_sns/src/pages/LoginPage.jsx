@@ -21,8 +21,10 @@ const LoginPage = () => {
     if (error) {
       if (error.message?.includes('Email not confirmed'))
         setError('이메일 인증이 필요합니다. 가입 시 받은 메일의 링크를 클릭해주세요.')
-      else
+      else if (error.message?.includes('Invalid login credentials'))
         setError('이메일 또는 비밀번호가 올바르지 않습니다.')
+      else
+        setError(`오류: ${error.message}`)
     }
     setLoading(false)
   }

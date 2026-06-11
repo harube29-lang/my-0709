@@ -21,7 +21,7 @@ const RegisterPage = () => {
     setError('')
     const { error } = await signUp(form.email, form.password, form.nickname)
     if (error) {
-      setError(error.message === 'User already registered' ? '이미 등록된 이메일입니다.' : '회원가입 중 오류가 발생했습니다.')
+      setError(error.message === 'User already registered' ? '이미 등록된 이메일입니다.' : `오류: ${error.message}`)
     } else {
       setSuccess(true)
       setTimeout(() => navigate('/login'), 2000)
