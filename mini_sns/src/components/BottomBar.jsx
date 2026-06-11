@@ -55,6 +55,7 @@ const BottomBar = () => {
                 boxShadow: '0 2px 8px rgba(109,76,65,0.4)',
                 '&:hover': { bgcolor: '#4B2C20' },
                 mt: '-20px',
+                pointerEvents: 'auto',
               }}
               onClick={() => navigate('/create')}
             >
